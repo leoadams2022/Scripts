@@ -375,7 +375,7 @@ document.addEventListener("keydown", function(event) {
 
 // Adding the Styles 
 const Head = document.querySelector("head");
-Head.insertAdjacentHTML("afterbegin", "<style>\n* {\ncolor: white !important;\n}\nhtml {\nbackground: #2e4f53 !important;\n}\ntd {\n    background: #2e4f53 !important;\n    color: white !important;\n    font-weight: bold;\nfont-size: 20px !important;\n}\na {\ncolor: #03a9f4 !important;\n}\ninput {\ncolor: black !important;\n    font-size: 12px !important;\n    font-weight: 700 !important;\n}\n.myBtn {\nmargin: 5px;\ncolor: black !important;\nfont-size: 15px;\nfont-weight: 600;\nborder: none;\nborder-radius: 10px;\npadding: 5px 10px;\n}\n.myBtn:hover {\n    background: #d8bfd8;\n}\nspan#AgentViewStatus table tbody tr td {\nbackground: none !important;\n}\nspan#AgentViewStatus table tbody tr td font {\ncolor: black !important;\n}\nspan#AgentViewSpan {\nbackground: #2e4f53 !important;\nright: 0px !important;\nleft: auto !important;\nheight: auto !important;\noverflow: auto !important;\n}\nspan#MainStatuSSpan {\nbackground: none !important;\n}\n textarea#comments { color: black !important; width: 100%;}select#FormSelect, select#FormSelect option{color: black !important;}\nselect#FormSelect,select.FormSelect {\nheight: 27px;\nborder-radius: 10px;\nfont-weight: bold;\nmargin: 5px;\ncolor: black !important;\nfont-size: 15px;\nfont-weight: 600;\nborder: none;\nborder-radius: 10px;\npadding: 5px 10px;\n}\ninput#calltime {\nwidth: 50px;\n}\nspan.FucnOnOffSapn {color: #ff9999 !important;}</stlye>");
+Head.insertAdjacentHTML("afterbegin", "<style>\n* {\ncolor: white !important;\n}\nhtml {\nbackground: #2e4f53 !important;\n}\ntd {\n    background: #2e4f53 !important;\n    color: white !important;\n    font-weight: bold;\nfont-size: 20px !important;\n}\na {\ncolor: #03a9f4 !important;\n}\ninput {\ncolor: black !important;\n    font-size: 12px !important;\n    font-weight: 700 !important;\n}\n.myBtn {\nmargin: 5px;\ncolor: black !important;\nfont-size: 15px;\nfont-weight: 600;\nborder: none;\nborder-radius: 10px;\npadding: 5px 10px;\n}\n.myBtn:hover {\n    background: #d8bfd8;\n}\nspan#AgentViewStatus table tbody tr td {\nbackground: none !important;\n}\nspan#AgentViewStatus table tbody tr td font {\ncolor: black !important;\n}\nspan#AgentViewSpan {\nbackground: #2e4f53 !important;\nright: 0px !important;\nleft: auto !important;\nheight: auto !important;\noverflow: auto !important;\n}\nspan#MainStatuSSpan {\nbackground: none !important;\n}\n textarea#comments { color: black !important; width: 100%;}select#FormSelect, select#FormSelect option{color: black !important;}\nselect#FormSelect,select.FormSelect {\nheight: 27px;\nborder-radius: 10px;\nfont-weight: bold;\nmargin: 5px;\ncolor: black !important;\nfont-size: 15px;\nfont-weight: 600;\nborder: none;\nborder-radius: 10px;\npadding: 5px 10px;\n}\ninput#calltime {\nwidth: 50px;\n}\nspan.FucnOnOffSapn {color: #ff9999 !important;}\nspan#RecorDMute\n{\ndisplay: none;\n}</stlye>");
 //                ---------------------------
 //                ---------------------------
 //Copy function
@@ -469,10 +469,14 @@ function AutoCheckDupFun() {
 					MuteA = MuteSpan.getElementsByTagName('a')[0],
 					MuteImg = MuteSpan.getElementsByTagName('img')[0];
 			var MuteImgSrc = MuteImg.getAttribute('src');
-			if(MuteImgSrc == "./images/vdc_volume_UNMUTE.gif"){//not muted
+			if(typeof MuteImgSrc === void(0)){
+				console.log('%cMuteImgSrc is undefined!!!', 'color: red;');
+			}else{
+				if(MuteImgSrc == "./images/vdc_volume_UNMUTE.gif"){//not muted
 				volume_control('MUTING',agentchannel,'AgenT');
-			}else if(MuteImgSrc == "./images/vdc_volume_MUTE.gif"){//muted
-				// alrady muted do nothing
+				}else if(MuteImgSrc == "./images/vdc_volume_MUTE.gif"){//muted
+					// alrady muted do nothing
+				}
 			}
 		}
 		// ///////////////auto mute part
@@ -484,10 +488,14 @@ function AutoCheckDupFun() {
 					MuteA = MuteSpan.getElementsByTagName('a')[0],
 					MuteImg = MuteSpan.getElementsByTagName('img')[0];
 			var MuteImgSrc = MuteImg.getAttribute('src');
-			if(MuteImgSrc == "./images/vdc_volume_UNMUTE.gif"){//not muted
-				// alrady Not muted do nothing
-			}else if(MuteImgSrc == "./images/vdc_volume_MUTE.gif"){//muted
-				volume_control('UNMUTE',agentchannel,'AgenT');
+			if(typeof MuteImgSrc === void(0)){
+				console.log('%cMuteImgSrc is undefined!!!', 'color: red;');
+			}else{
+				if(MuteImgSrc == "./images/vdc_volume_UNMUTE.gif"){//not muted
+				volume_control('MUTING',agentchannel,'AgenT');
+				}else if(MuteImgSrc == "./images/vdc_volume_MUTE.gif"){//muted
+					// alrady muted do nothing
+				}
 			}
 		}
 		// ///////////////auto mute part
