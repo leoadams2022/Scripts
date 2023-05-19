@@ -1,0 +1,750 @@
+// reset the autoHnangup when user hungup
+function IhungedUpFun() {
+    clearTimeout(hungupFun);
+    clearTimeout(DispoFun);
+    clearTimeout(AutoHangupFun);
+    setTimeout(AutoHangup, 1000);
+    GetDispo();
+    console.log('%cIhungedUpFun clicked', 'color: green;');
+}
+//treger IhungedUpFun when hungup btn is clicked
+var HangupControl = document.getElementById("HangupControl");
+HangupControl.addEventListener("click", IhungedUpFun);
+const Leave3WayCall = document.getElementById("Leave3WayCall");
+Leave3WayCall.addEventListener("click", IhungedUpFun);
+// on and off var to tunr autohngup on and off
+var OnOff = 'On';
+var randomOnOff = 'Off';
+var AutMuOnOff = 'On';
+//adding the button to tunr autohngup on and off
+const comments = document.querySelector("#comments");
+comments.insertAdjacentHTML("afterend", `<select id=\"FormSelect\"><option value=\"New\" selected>New</option><option value=\"Old\" >Old</option></select><Button class='myBtn CopyBtn' onclick=\"Copy()\">Copy</Button><Button onclick=\"googleForm()\" class=\"myBtn googleFormBtn\">Our Form</Button><Button onclick=\"MyGoogleForm()\" class=\"myBtn googleFormBtn\">My Form</Button><span id=\"dupspan\"></span><br><span id=\"Dispospan\"  style=\"color: #ff9999  !important;\"></span><br><span id=\"Dispospan2\"  style=\"color: #ff9999  !important;\"></span><br><input type=\'number\' id=\'calltime\' value=\'10\'><button class="myBtn OnOffBtn" onclick="AutoHungupOnOff()">Aut</button><button class="myBtn OnOffBtn" onclick="randomAutoHungupOnOff()">Ran</button><span class='FucnOnOffSapn' id='FucnOnOffSapn'>AutOn</span><span class='FucnOnOffSapn' id='randomFucnOnOffSapn'>RanOff</span><br><button class="myBtn OnOffBtn" onclick="autoMute()">AutMu</button><button class="myBtn OnOffBtn" onclick="MuteRecording()">RecMu</button><span class='FucnOnOffSapn' id='AutMuSpan'>AutMuOn</span><span class='FucnOnOffSapn' id='RecMuSapn'>RecMuOff</span>`);
+
+// autoMute function
+function autoMute(){
+	var resSpan = document.getElementById('AutMuSpan');
+	if(AutMuOnOff === 'On'){
+		AutMuOnOff = 'Off';
+		resSpan.innerHTML ='AutMuOff';
+		resSpan.setAttribute("style", "color: #00ff0a !important;"); 
+	}else if(AutMuOnOff === 'Off'){
+		AutMuOnOff = 'On';
+		resSpan.innerHTML ='AutMuOn';
+		resSpan.setAttribute("style", "color: #ff9999 !important;");
+	}	
+}
+//MuteRecording function
+function MuteRecording(){
+	var resSpan = document.getElementById('RecMuSapn');
+	if(isRecMuted){
+		MuteRecordingByLeo('off');
+		if(isRecMuted == false){
+			resSpan.innerHTML ='RecMuOff';
+			resSpan.setAttribute("style", "color: #00ff0a !important;"); 
+		}
+	}else if(isRecMuted == false){
+		MuteRecordingByLeo('on');
+		if(isRecMuted == true){
+			resSpan.innerHTML ='RecMuOn';
+			resSpan.setAttribute("style", "color: #ff9999 !important;");
+		}
+	}
+}
+
+function AutoHungupOnOff(){
+    var resSpan = document.getElementById('FucnOnOffSapn');
+        if(OnOff === 'On'){
+            OnOff = 'Off';
+            resSpan.innerHTML ='AutOff';
+            resSpan.setAttribute("style", "color: #00ff0a !important;"); 
+        }else if(OnOff === 'Off'){
+            OnOff = 'On';
+            resSpan.innerHTML ='AutOn';
+            resSpan.setAttribute("style", "color: #ff9999 !important;");
+        }
+}
+function randomAutoHungupOnOff(){
+    var randomresSpan = document.getElementById('randomFucnOnOffSapn');
+        if(randomOnOff === 'On'){
+            randomOnOff = 'Off';
+            randomresSpan.innerHTML ='RanOff';
+            randomresSpan.setAttribute("style", "color: #00ff0a !important;"); 
+        }else if(randomOnOff === 'Off'){
+            randomOnOff = 'On';
+            randomresSpan.innerHTML ='RanOn';
+            randomresSpan.setAttribute("style", "color: #ff9999 !important;");
+        }
+}
+// var's to setTimeout so we can reset it outside the  AutoHangup function
+var hungupFun;
+var DispoFun;
+var AutoHangupFun;
+// function to get a randome Disop
+function randomDspo(){
+	let Arr1,ArrRes,dispoCode,fullDispo;
+	Arr1=["\'N\'","\'A\'","\'NI\'","\'NV\'"];
+	dispoCode = Arr1[Math.floor(Math.random()*Arr1.length)];
+	fullDispo =  fullDispo + ", \'ADD\', \'YES\'";
+	ArrRes = {'fullDispo':fullDispo,'dispoCode':dispoCode};
+	return ArrRes;
+}
+// function to get a randome Number btween 5 and 30 or any other numbers
+function randomNum(fiveToThirty=true,num1=5,num2=30){
+	let numsArr =[];
+	if(fiveToThirty == false){
+		for(let i=num1;i <= num2;i++){
+		numsArr.push(i);
+		}
+	}else{
+		numsArr = [5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30];
+	}
+	let randomNum = numsArr[Math.floor(Math.random()*numsArr.length)];
+	ArrRes = {'randomNum':randomNum	,'numsArr':numsArr};
+	return ArrRes;
+}
+// the AutoHangup function
+function AutoHangup() {
+	var timeOftheCall;
+	if(randomOnOff == 'On'){
+		timeOftheCall = randomNum()['randomNum'];
+	}else{
+		//this is the time of the call by SEC's you can change is as u like
+		timeOftheCall = document.getElementById('calltime').value;
+	}
+    //--------------------------
+    var funcOn = '';
+    var HungUpSpan = document.getElementById('HangupControl'),
+        HungUpA = HungUpSpan.getElementsByTagName('a')[0];
+    if (typeof HungUpA === 'undefined') { //check if there is a call
+        funcOn = 'off'; //there is no call
+		console.log('%cthere is no active call have setTimeout for the func as 1000', 'color: green;');
+    } else { //there is call
+        funcOn = 'on'
+		console.log('%ccall is active func started', 'color: green;');
+		// getimg a random dspo rady;
+		let randomDispoObj = randomDspo();
+		let fullDispo = randomDispoObj['fullDispo'];
+		let dispoCode = randomDispoObj['dispoCode'];
+        function hungup() {
+            if (OnOff === 'On') {
+				console.log('%cOnOff is On', 'color: green;');
+                var HungUpSpan = document.getElementById('HangupControl'),
+                    HungUpA = HungUpSpan.getElementsByTagName('a')[0],
+                    HungUpImg = HungUpA.getElementsByTagName('img')[0];
+                var ImgSrc = HungUpImg.getAttribute('src');
+                if (ImgSrc == './images/vdc_LB_hangupcustomer.gif') {
+                    dialedcall_send_hangup('', '', '', '', 'YES');
+					CallDispo = dispoCode;
+                    CallLogFunction();
+					console.log('%cImgSrc is good just hungedup the call', 'color: green;');
+                } else {
+                    console.log('%cImgSrc is not good cant hungup', 'color: red;');
+                }
+            } else if (OnOff === 'Off') {
+                console.log('%cOnOff is Off didnt hungup the call', 'color: red;');
+            }
+        }; // the time of the call let's call it X
+        hungupFun = setTimeout(hungup, Number(timeOftheCall) * 1000);
+        function Dispo() {
+            const DispoSelectBox = document.querySelector('#DispoSelectBox');
+            const visibility = DispoSelectBox.style.visibility;
+            //makeing sure that the Dispo page is visibleq	
+            if (visibility === 'visible') {
+				console.log('%cDispo table is visible', 'color: green;');
+				//var myArray = ["\'N\', \'ADD\', \'YES\'","\'A\', \'ADD\', \'YES\'","\'NI\', \'ADD\', \'YES\'","\'NV\', \'ADD\', \'YES\'",];
+				//var randomItem = myArray[Math.floor(Math.random()*myArray.length)];
+                DispoSelectContent_create(fullDispo);
+                DispoSelect_submit('', '', 'YES');
+				console.log('%chave Disopstioned as '+randomItem, 'color: green;');
+                var resSpan = document.getElementById('Dispospan');
+                resSpan.innerHTML = 'AH '+randomItem;
+                setTimeout(() => {
+                    resSpan.innerHTML = '';
+                }, 3000);
+            } else {
+                console.log('%cdid not Disopstion the Disop table is =  ' + visibility, 'color: red;');
+            }
+        } //this have to be X+2
+        DispoFun = setTimeout(Dispo, (Number(timeOftheCall) + 2) * 1000);
+    }
+    if (funcOn === 'off') {
+        AutoHangupFun = setTimeout(AutoHangup, 1000); //this shuld always be 1000
+    } else if (funcOn === 'on') {
+        AutoHangupFun = setTimeout(AutoHangup, (Number(timeOftheCall) + 3) * 1000); // this have to always be X+3
+		console.log('%chave setTimeout for the func as ' + Number(timeOftheCall) , 'color: green;');
+    }
+}
+setTimeout(AutoHangup, 1000); //this shuld always be 1000
+// auto hung up when cust hungs up function
+function CustHungUp() {
+	var TransferVisibility = document.querySelector('#TransferMain').style.visibility;
+	if (TransferVisibility === 'visible') {
+		/*alert('Cust Hung Up')*/
+	} else {
+		var TabsSpan = document.getElementById('Tabs'),
+			table = TabsSpan.getElementsByTagName('table')[0],
+			tbody = table.getElementsByTagName('tbody')[0],
+			tr = tbody.getElementsByTagName('tr')[0],
+			td = tr.getElementsByTagName('td')[3],
+			img = td.getElementsByTagName('img')[0];
+		var ImgSrc = img.getAttribute('src');
+		if (ImgSrc == 'https://ngs1.mscall.net/agc/images/agc_live_call_DEAD.gif' || ImgSrc == 'https://ngs2.mscall.net/agc/images/agc_live_call_DEAD.gif') {
+			console.log('%cCust haungup', 'color: blue;');
+			var HungUpSpan = document.getElementById('HangupControl'),
+				HungUpA = HungUpSpan.getElementsByTagName('a')[0],
+				HungUpImg = HungUpA.getElementsByTagName('img')[0];
+			var ImgSrc = HungUpImg.getAttribute('src');
+			if (ImgSrc == './images/vdc_LB_hangupcustomer.gif') {
+				dialedcall_send_hangup('', '', '', '', 'YES');
+				CallDispo = 'NI';
+				CallLogFunction();
+				console.log('%cImgSrc is good just hungedup the call', 'color: blue;');
+				clearTimeout(hungupFun);
+				clearTimeout(DispoFun);
+				clearTimeout(AutoHangupFun);
+				console.log('%ccanceled timeout for hungupFun & DispoFun & AutoHangupFun and have set timeout as 1000', 'color: blue;');
+				setTimeout(() => {
+					DispoSelectContent_create('NI', 'ADD', 'YES');
+					DispoSelect_submit('', '', 'YES');
+					console.log('%chave Disopstioned as ANS', 'color: blue;');
+				}, 1000);
+				setTimeout(AutoHangup, 2000);
+				// var resSpan = document.getElementById('post_phone_time_diff_span_contents');
+				var resSpan = document.getElementById('Dispospan');
+				resSpan.innerHTML = 'Cust HungUp Not Interested';
+				setTimeout(() => {
+					resSpan.innerHTML = '';
+				}, 4000);
+			}
+		} else {}
+	}
+}
+setInterval(CustHungUp, 1000);
+// the hungup with the keyboared function
+document.getElementById('post_phone_time_diff_span').style.visibility = 'visible';
+document.addEventListener("keydown", function(event) {
+    var resSpan = document.getElementById('Dispospan');
+    switch (event.which) {
+        case 112:
+            event.preventDefault();
+            var HungUpSpan = document.getElementById('HangupControl'),
+                HungUpA = HungUpSpan.getElementsByTagName('a')[0];
+            if (typeof HungUpA === 'undefined') {
+                alert('There is no active call to hungup');
+            } else {
+                var HungUpSpan = document.getElementById('HangupControl'),
+                    HungUpA = HungUpSpan.getElementsByTagName('a')[0],
+                    HungUpImg = HungUpA.getElementsByTagName('img')[0];
+                var ImgSrc = HungUpImg.getAttribute('src');
+                if (ImgSrc == './images/vdc_LB_hangupcustomer.gif') {
+					clearTimeout(hungupFun);
+					clearTimeout(DispoFun);
+					clearTimeout(AutoHangupFun);
+					console.log('%cIhungedUpFun clicked', 'color: green;');
+                    dialedcall_send_hangup('', '', '', '', 'YES');
+					CallDispo = 'N';
+                    CallLogFunction();
+                    setTimeout(() => {
+                        //
+                        DispoSelectContent_create('N', 'ADD', 'YES');
+                        DispoSelect_submit('', '', 'YES');
+                    }, 1000);
+					setTimeout(AutoHangup, 2000);
+                    // var resSpan = document.getElementById('post_phone_time_diff_span_contents');
+                    resSpan.innerHTML = 'No Answer';
+                    setTimeout(() => {
+                        resSpan.innerHTML = '';
+                    }, 4000);
+                }
+            }
+            break;
+        case 113:
+            event.preventDefault();
+            var HungUpSpan = document.getElementById('HangupControl'),
+                HungUpA = HungUpSpan.getElementsByTagName('a')[0];
+            if (typeof HungUpA === 'undefined') {
+                alert('There is no active call to hungup');
+            } else {
+                var HungUpSpan = document.getElementById('HangupControl'),
+                    HungUpA = HungUpSpan.getElementsByTagName('a')[0],
+                    HungUpImg = HungUpA.getElementsByTagName('img')[0];
+                var ImgSrc = HungUpImg.getAttribute('src');
+                if (ImgSrc == './images/vdc_LB_hangupcustomer.gif') {
+					clearTimeout(hungupFun);
+					clearTimeout(DispoFun);
+					clearTimeout(AutoHangupFun);
+					console.log('%cIhungedUpFun clicked', 'color: green;');
+                    dialedcall_send_hangup('', '', '', '', 'YES');
+					CallDispo = 'A';
+                    CallLogFunction();
+                    setTimeout(() => {
+                        DispoSelectContent_create('A', 'ADD', 'YES');
+                        DispoSelect_submit('', '', 'YES');
+                    }, 1000);
+					setTimeout(AutoHangup, 2000);
+                    // var resSpan = document.getElementById('post_phone_time_diff_span_contents');
+                    resSpan.innerHTML = 'Answering Machine';
+                    setTimeout(() => {
+                        resSpan.innerHTML = '';
+                    }, 4000);
+                }
+            }
+            break;
+        case 114:
+            event.preventDefault();
+            var HungUpSpan = document.getElementById('HangupControl'),
+                HungUpA = HungUpSpan.getElementsByTagName('a')[0];
+            if (typeof HungUpA === 'undefined') {
+                alert('There is no active call to hungup');
+            } else {
+                var HungUpSpan = document.getElementById('HangupControl'),
+                    HungUpA = HungUpSpan.getElementsByTagName('a')[0],
+                    HungUpImg = HungUpA.getElementsByTagName('img')[0];
+                var ImgSrc = HungUpImg.getAttribute('src');
+                if (ImgSrc == './images/vdc_LB_hangupcustomer.gif') {
+					clearTimeout(hungupFun);
+					clearTimeout(DispoFun);
+					clearTimeout(AutoHangupFun);
+					console.log('%cIhungedUpFun clicked', 'color: green;');
+                    dialedcall_send_hangup('', '', '', '', 'YES');
+					CallDispo = 'NI';
+                    CallLogFunction();
+                    setTimeout(() => {
+                        DispoSelectContent_create('NI', 'ADD', 'YES');
+                        DispoSelect_submit('', '', 'YES');
+                    }, 1000);
+					setTimeout(AutoHangup, 2000);
+                    // var resSpan = document.getElementById('post_phone_time_diff_span_contents');
+                    resSpan.innerHTML = 'Not Interested';
+                    setTimeout(() => {
+                        resSpan.innerHTML = '';
+                    }, 4000);
+                }
+            }
+            break;
+        case 115:
+            event.preventDefault();
+            var HungUpSpan = document.getElementById('HangupControl'),
+                HungUpA = HungUpSpan.getElementsByTagName('a')[0];
+            if (typeof HungUpA === 'undefined') {
+                alert('There is no active call to hungup');
+            } else {
+                var HungUpSpan = document.getElementById('HangupControl'),
+                    HungUpA = HungUpSpan.getElementsByTagName('a')[0],
+                    HungUpImg = HungUpA.getElementsByTagName('img')[0];
+                var ImgSrc = HungUpImg.getAttribute('src');
+                if (ImgSrc == './images/vdc_LB_hangupcustomer.gif') {
+					clearTimeout(hungupFun);
+					clearTimeout(DispoFun);
+					clearTimeout(AutoHangupFun);
+					console.log('%cIhungedUpFun clicked', 'color: green;');
+                    dialedcall_send_hangup('', '', '', '', 'YES');
+					CallDispo = 'NV';
+                    CallLogFunction();
+                    setTimeout(() => {
+                        DispoSelectContent_create('NV', 'ADD', 'YES');
+                        DispoSelect_submit('', '', 'YES');
+                    }, 1000);
+					setTimeout(AutoHangup, 2000);
+                    // var resSpan = document.getElementById('post_phone_time_diff_span_contents');
+                    resSpan.innerHTML = 'Not Vetran';
+                    setTimeout(() => {
+                        resSpan.innerHTML = '';
+                    }, 4000);
+                }
+            }
+            break;
+        case 123:
+            event.preventDefault();
+            //off 00ff0a on ff9999
+			var resSpan = document.getElementById('FucnOnOffSapn');
+			if(OnOff === 'On'){
+				OnOff = 'Off';
+				resSpan.innerHTML ='Auto function is off';
+                resSpan.setAttribute('style','color: #00ff0a !important');
+			}else if(OnOff === 'Off'){
+				OnOff = 'On';
+				resSpan.innerHTML ='Auto function is on';
+                resSpan.setAttribute('style','color: #ff9999 !important');
+				}
+			break;
+    }
+})
+
+
+//                ---------------------------
+
+// Adding the Styles 
+const Head = document.querySelector("head");
+Head.insertAdjacentHTML("afterbegin", "<style>\n* {\ncolor: white !important;\n}\nhtml {\nbackground: #2e4f53 !important;\n}\ntd {\n    background: #2e4f53 !important;\n    color: white !important;\n    font-weight: bold;\nfont-size: 20px !important;\n}\na {\ncolor: #03a9f4 !important;\n}\ninput {\ncolor: black !important;\n    font-size: 12px !important;\n    font-weight: 700 !important;\n}\n.myBtn {\nmargin: 5px;\ncolor: black !important;\nfont-size: 15px;\nfont-weight: 600;\nborder: none;\nborder-radius: 10px;\npadding: 5px 10px;\n}\n.myBtn:hover {\n    background: #d8bfd8;\n}\nspan#AgentViewStatus table tbody tr td {\nbackground: none !important;\n}\nspan#AgentViewStatus table tbody tr td font {\ncolor: black !important;\n}\nspan#AgentViewSpan {\nbackground: #2e4f53 !important;\nright: 0px !important;\nleft: auto !important;\nheight: auto !important;\noverflow: auto !important;\n}\nspan#MainStatuSSpan {\nbackground: none !important;\n}\n textarea#comments { color: black !important; width: 100%;}select#FormSelect, select#FormSelect option{color: black !important;}\nselect#FormSelect,select.FormSelect {\nheight: 27px;\nborder-radius: 10px;\nfont-weight: bold;\nmargin: 5px;\ncolor: black !important;\nfont-size: 15px;\nfont-weight: 600;\nborder: none;\nborder-radius: 10px;\npadding: 5px 10px;\n}\ninput#calltime {\nwidth: 50px;\n}\nspan.FucnOnOffSapn {color: #ff9999 !important;}</stlye>");
+//                ---------------------------
+//                ---------------------------
+//Copy function
+function Copy() {
+	var number = document.getElementById('phone_numberDISP').innerText;
+	var first = document.getElementById('first_name').value;
+	var last = document.getElementById('last_name').value;
+	navigator.clipboard.writeText(number + ' ' + first + ' ' + last);
+}
+
+// google Form 
+function googleForm() {
+	var HungUpSpan = document.getElementById('HangupControl'),
+		HungUpA = HungUpSpan.getElementsByTagName('a')[0];
+	if (typeof HungUpA === 'undefined') {
+		alert('There is No Active Call');
+	} else {
+		var number = document.getElementById('phone_numberDISP').innerText;
+		var first = document.getElementById('first_name').value;
+		var last = document.getElementById('last_name').value;
+		var address = document.getElementById('address1').value;
+		var city = document.getElementById('city').value;
+		var state = document.getElementById('state').value;
+		var zip = document.getElementById('postal_code').value;
+		var email = document.getElementById('email').value;
+		var comments = document.getElementById('comments').value;
+		var phone_code = document.getElementById('phone_code').value;
+		var SelVal = document.getElementById("FormSelect").value;
+		if (SelVal === 'New') {
+			window.open(`https://docs.google.com/forms/d/e/1FAIpQLSfrMa2vUwg5GRkHo9_oZch4KcvQdPG-uGhBKZ9IDfbXFKpsDQ/viewform?usp=pp_url&entry.1571300582=${first}+${last}&entry.916874017=${address}+${city}+${state}+${zip}&entry.75396275=&entry.160962226=&entry.723605801=Leo&entry.1490107561=${number}`);
+		} else if (SelVal === 'Old') {
+			window.open(`https://docs.google.com/forms/d/e/1FAIpQLSdOidVDfY1ZgRA6Hc5WVEibSowAngnUpJ8YiI_dpqgLTlrtaQ/viewform?usp=pp_url&entry.639391463=${first}+${last}&entry.103003790=${address}+${city}+${state}+${zip}&entry.1471785011=${number}&entry.1146160959=Leo`);
+		}
+	}
+}
+//                ---------------------------
+
+// MY  google Form 
+function MyGoogleForm() {
+	var HungUpSpan = document.getElementById('HangupControl'),
+		HungUpA = HungUpSpan.getElementsByTagName('a')[0];
+	if (typeof HungUpA === 'undefined') {
+		alert('There is No Active Call');
+	} else {
+		var number = document.getElementById('phone_numberDISP').innerText;
+		var first = document.getElementById('first_name').value;
+		var last = document.getElementById('last_name').value;
+		var address = document.getElementById('address1').value;
+		var city = document.getElementById('city').value;
+		var state = document.getElementById('state').value;
+		var zip = document.getElementById('postal_code').value;
+		var email = document.getElementById('email').value;
+		var comments = document.getElementById('comments').value;
+		var phone_code = document.getElementById('phone_code').value;
+		var SelVal = document.getElementById("FormSelect").value;
+		var NewOld = '';
+		if (SelVal === 'New') {
+			NewOld = "New Tort"
+		} else if (SelVal === 'Old') {
+			NewOld = "Old Tort"
+		}
+		window.open(`https://docs.google.com/forms/d/e/1FAIpQLSdZpEg__LoOqaKDENr2V8i8EbWQ4lY6mCVf-F_OQu0aZk3aMw/viewform?usp=pp_url&entry.1714741896=${first}+${last}&entry.79476890=${number}&entry.1938784237=${address}+${city}+${state}+${zip}&entry.1521110734=${email}&entry.1004047280=${comments}&entry.2042514721=${NewOld}`);
+	}
+}
+//                ---------------------------
+
+// AUTO Dup Checker
+// get the dup list from the localStorage
+//        Old 
+var DupListOld = [];
+const SavedListOld = JSON.parse(localStorage.getItem("DupListOld"));
+if (null == SavedListOld) alert('no Old dup list in the lucalstorge');
+else null != SavedListOld && (DupListOld = SavedListOld);
+//        New
+var DupListNew = [];
+const SavedListNew = JSON.parse(localStorage.getItem("DupListNew"));
+if (null == SavedListNew) alert('no New dup list in the lucalstorge');
+else null != SavedListNew && (DupListNew = SavedListNew);
+// auto check Dup ----------------------------------
+function AutoCheckDupFun() {
+	var HungUpSpan = document.getElementById('HangupControl'),
+		HungUpA = HungUpSpan.getElementsByTagName('a')[0];
+	var res = document.getElementById("dupspan");
+	var Num = document.getElementById('phone_numberDISP').innerText
+	if (typeof HungUpA === 'undefined') {
+		// console.log('There is no active call to hungup');
+		res.innerHTML = "";
+		// auto mute part
+		if(AutMuOnOff == 'On'){
+			var MuteSpan = document.getElementById('AgentMuteSpan'),
+					MuteA = MuteSpan.getElementsByTagName('a')[0],
+					MuteImg = MuteSpan.getElementsByTagName('img')[0];
+			var MuteImgSrc = MuteImg.getAttribute('src');
+			if(MuteImgSrc == "./images/vdc_volume_UNMUTE.gif"){//not muted
+				volume_control('MUTING',agentchannel,'AgenT');
+			}else if(MuteImgSrc == "./images/vdc_volume_MUTE.gif"){//muted
+				// alrady muted do nothing
+			}
+		}
+		// ///////////////auto mute part
+	} else {
+		
+		// auto mute part
+		if(AutMuOnOff == 'On'){
+			var MuteSpan = document.getElementById('AgentMuteSpan'),
+					MuteA = MuteSpan.getElementsByTagName('a')[0],
+					MuteImg = MuteSpan.getElementsByTagName('img')[0];
+			var MuteImgSrc = MuteImg.getAttribute('src');
+			if(MuteImgSrc == "./images/vdc_volume_UNMUTE.gif"){//not muted
+				// alrady Not muted do nothing
+			}else if(MuteImgSrc == "./images/vdc_volume_MUTE.gif"){//muted
+				volume_control('UNMUTE',agentchannel,'AgenT');
+			}
+		}
+		// ///////////////auto mute part
+		
+		var SelVal = document.getElementById("FormSelect").value;
+		if (SelVal === 'New') {
+			var TorFONew = DupListNew.includes(Num);
+			if (TorFONew == true) {
+				res.innerHTML = "New=BAD :(";
+				res.setAttribute("style", "color: red !important;"); //#00ff0a
+			} else {
+				res.innerHTML = "New=Good :)";
+				res.setAttribute("style", "color: #00ff0a !important;"); //#00ff0a
+			}
+		} else if (SelVal === 'Old') {
+			var TorFOld = DupListOld.includes(Num);
+			if (TorFOld == true) {
+				res.innerHTML = "Old=BAD :(";
+				res.setAttribute("style", "color: red !important;"); //#00ff0a
+			} else {
+				res.innerHTML = "Old=Good :)";
+				res.setAttribute("style", "color: #00ff0a !important;"); //#00ff0a
+			}
+		}
+		var number = document.getElementById('phone_numberDISP').innerText;
+		var resSpan2 = document.getElementById('Dispospan2');
+		var TorF = NumbersArray.includes(number);
+		if (TorF == true) {
+			resSpan2.innerHTML = "ReC" + number;
+			/*setTimeout(() => {
+					resSpan2.innerHTML = '';
+				}, 5000);*/
+		} else {
+			resSpan2.innerHTML = '';
+		}
+	}
+}
+setInterval(AutoCheckDupFun, 1000);
+//                ---------------------------
+// Call Log function
+const SavedList = JSON.parse(localStorage.getItem('CallLogLocalStorage'));
+if (SavedList == null) {
+	var CallLogObject = [];
+	var NumbersArray = [];
+} else if (SavedList != null) {
+	CallLogObject = SavedList;
+	var NumbersArray = [];
+	var CallLogObjectFlat = CallLogObject.flat();
+	for (var j = 0; j < CallLogObjectFlat.length; j++) {
+		NumbersArray.push(CallLogObjectFlat[j].number);
+	}
+}
+// const HangupControl = document.getElementById("HangupControl");
+// HangupControl.addEventListener("click", GetDispo);
+// const Leave3WayCall = document.getElementById("Leave3WayCall");
+// Leave3WayCall.addEventListener("click", GetDispo);
+/*
+const HangupControl = document.getElementById("HangupControl");
+
+const Leave3WayCall = document.getElementById("Leave3WayCall");
+
+
+
+*/
+HangupControl.addEventListener("click", GetDispo);
+
+Leave3WayCall.addEventListener("click", GetDispo);
+
+var CallDispo;
+
+function CallLogFunction() {
+	var number = document.getElementById('phone_numberDISP').innerText; //'                   '
+	if (number === '                   ') {
+		alert('There is no Number From:CallLogFunction');
+	} else {
+		var number = document.getElementById('phone_numberDISP').innerText; //'                   '
+		var resSpan2 = document.getElementById('Dispospan2');
+		var TorF = NumbersArray.includes(number);
+		if (TorF == true) {
+			/*resSpan2.innerHTML = "I have called This Number before "+number;
+				// this is being done at the autoDupCheacker so you can see it before you hung up
+				setTimeout(() => {
+						resSpan2.innerHTML = '';
+					}, 5000);*/
+					CallLogObject.forEach(Element => {
+						if(Element[0].number == number){
+							let time = new Date();
+							time = time.toLocaleString("en-US");
+                            Element[0].ReCallDate += `//  ReCallDate: ${time}  //`;
+							localStorage.setItem('CallLogLocalStorage', JSON.stringify(CallLogObject));
+						}
+					})
+		} else {
+			NumbersArray.push(number);
+			var first = document.getElementById('first_name').value;
+			var last = document.getElementById('last_name').value;
+			var address = document.getElementById('address1').value;
+			var city = document.getElementById('city').value;
+			var state = document.getElementById('state').value;
+			var zip = document.getElementById('postal_code').value;
+			var email = document.getElementById('email').value;
+			var comments = document.getElementById('comments').value;
+			var phone_code = document.getElementById('phone_code').value;
+			var CallTime = document.querySelector('#SecondSDISP').innerText;
+			document.getElementById('phone_code').value = 'add';
+			var list = CallLogObject.flat();
+			let time = new Date();
+			time = time.toLocaleString("en-US");
+			var NewItem = [{
+				"Date": time,
+				"number": number,
+				"first": first,
+				"last": last,
+				"address": address,
+				"city": city,
+				"state": state,
+				"zip": zip,
+				"email": email,
+				"comments": comments,
+				"phone_code": phone_code,
+				"CallDispo": CallDispo,
+				"ReCallDate": "",
+				"CallTime": CallTime
+			}];
+			CallLogObject.push(NewItem);
+			localStorage.setItem('CallLogLocalStorage', JSON.stringify(CallLogObject))
+		}
+	}
+}
+
+function GetDispo() {
+	setTimeout(() => {
+		var DispoTable = document.getElementById('DispoSelectBox').style.visibility; //hidden  visible
+		if (DispoTable == 'visible') {
+			var A = document.querySelector('[onclick="DispoSelectContent_create(\'A\',\'ADD\',\'YES\');return false;"]');
+			A.addEventListener("click", function() {
+				CallDispo = 'A';
+				CallLogFunction();
+			});
+			var B = document.querySelector('[onclick="DispoSelectContent_create(\'B\',\'ADD\',\'YES\');return false;"]');
+			B.addEventListener("click", function() {
+				CallDispo = 'B';
+				CallLogFunction();
+			});
+			var CALLBK = document.querySelector('[onclick="DispoSelectContent_create(\'CALLBK\',\'ADD\',\'YES\');return false;"]');
+			CALLBK.addEventListener("click", function() {
+				CallDispo = 'CALLBK';
+				CallLogFunction();
+			});
+			var DAIR = document.querySelector('[onclick="DispoSelectContent_create(\'DAIR\',\'ADD\',\'YES\');return false;"]');
+			DAIR.addEventListener("click", function() {
+				CallDispo = 'DAIR';
+				CallLogFunction();
+			});
+			var DC = document.querySelector('[onclick="DispoSelectContent_create(\'DC\',\'ADD\',\'YES\');return false;"]');
+			DC.addEventListener("click", function() {
+				CallDispo = 'DC';
+				CallLogFunction();
+			});
+			var DEC = document.querySelector('[onclick="DispoSelectContent_create(\'DEC\',\'ADD\',\'YES\');return false;"]');
+			DEC.addEventListener("click", function() {
+				CallDispo = 'DEC';
+				CallLogFunction();
+			});
+			var DNC = document.querySelector('[onclick="DispoSelectContent_create(\'DNC\',\'ADD\',\'YES\');return false;"]');
+			DNC.addEventListener("click", function() {
+				CallDispo = 'DNC';
+				CallLogFunction();
+			});
+			var N = document.querySelector('[onclick="DispoSelectContent_create(\'N\',\'ADD\',\'YES\');return false;"]');
+			N.addEventListener("click", function() {
+				CallDispo = 'N';
+				CallLogFunction();
+			});
+			var NI = document.querySelector('[onclick="DispoSelectContent_create(\'NI\',\'ADD\',\'YES\');return false;"]');
+			NI.addEventListener("click", function() {
+				CallDispo = 'NI';
+				CallLogFunction();
+			});
+			var NP = document.querySelector('[onclick="DispoSelectContent_create(\'NP\',\'ADD\',\'YES\');return false;"]');
+			NP.addEventListener("click", function() {
+				CallDispo = 'NP';
+				CallLogFunction();
+			});
+			var NV = document.querySelector('[onclick="DispoSelectContent_create(\'NV\',\'ADD\',\'YES\');return false;"]');
+			NV.addEventListener("click", function() {
+				CallDispo = 'NV';
+				CallLogFunction();
+			});
+			var SALE = document.querySelector('[onclick="DispoSelectContent_create(\'SALE\',\'ADD\',\'YES\');return false;"]');
+			SALE.addEventListener("click", function() {
+				CallDispo = 'SALE';
+				CallLogFunction();
+			});
+			var XFER = document.querySelector('[onclick="DispoSelectContent_create(\'XFER\',\'ADD\',\'YES\');return false;"]');
+			XFER.addEventListener("click", function() {
+				CallDispo = 'XFER';
+				CallLogFunction();
+			});
+		} else {
+			console.log('DispoTable != visible', DispoTable);
+		}
+	}, 1000);
+}
+//----------------------------------------------------------
+
+
+let isRecMuted = false;
+function MuteRecordingByLeo(taskmute)// take 'on' or 'of'
+		{
+		var xmlhttp=false;
+		
+		if (!xmlhttp && typeof XMLHttpRequest!='undefined')
+			{
+			xmlhttp = new XMLHttpRequest();
+			}
+		if (xmlhttp) 
+			{
+			var epochCID = epoch_sec;
+			var leadCID = document.vicidial_form.lead_id.value;
+			if (leadCID.length < 1)
+				{leadCID = user_abb;}
+			leadCID = set_length(leadCID,'10','left');
+			epochCID = set_length(epochCID,'6','right');
+			var queryCID = "AM" + epochCID + 'W' + leadCID + 'W';
+			var recmute_query = "server_ip=" + server_ip + "&session_name=" + session_name + "&user=" + user + "&pass=" + pass + "&ACTION=MuteRecording&format=text&channel=" + active_rec_channel + "&stage=" + taskmute + "&exten=" + session_id + "&ext_context=" + ext_context + "&queryCID=" + queryCID + "&agent_log_id=" + agent_log_id + "&lead_id=" + document.vicidial_form.lead_id.value + "&uniqueid=" + document.vicidial_form.uniqueid.value + "&campaign=" + campaign + "&user_group=" + VU_user_group;
+
+			xmlhttp.open('POST', 'manager_send.php'); 
+			xmlhttp.setRequestHeader('Content-Type','application/x-www-form-urlencoded; charset=UTF-8');
+			xmlhttp.send(recmute_query); 
+			xmlhttp.onreadystatechange = function() 
+				{ 
+				if (xmlhttp.readyState == 4 && xmlhttp.status == 200) 
+					{
+					Nactiveext = null;
+					Nactiveext = xmlhttp.responseText;
+					
+                    
+                    let test = Nactiveext.split(",");
+                    let test2 = test[1].includes("Muting on on");// ture or false
+                    if(test2 == true){
+                        // rec muting is on
+                        isRecMuted = true;
+                    }else if(test2 == false){
+                        // rec muting is off
+                        isRecMuted = false;
+                    }else{
+                        console.log('recmute_query: ',recmute_query);
+                        console.log('responseText: ',xmlhttp.responseText);
+                        alert('responseText: '+xmlhttp.responseText);
+                    }
+					}
+				}
+			delete xmlhttp;
+			}
+}
+
+
+
