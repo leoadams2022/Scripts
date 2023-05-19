@@ -468,10 +468,10 @@ function AutoCheckDupFun() {
 			var MuteSpan = document.getElementById('AgentMuteSpan'),
 					MuteA = MuteSpan.getElementsByTagName('a')[0],
 					MuteImg = MuteSpan.getElementsByTagName('img')[0];
-			var MuteImgSrc = MuteImg.getAttribute('src');
-			if(typeof MuteImgSrc === void(0)){
+			if(typeof MuteImg === void(0)){
 				console.log('%cMuteImgSrc is undefined!!!', 'color: red;');
 			}else{
+				var MuteImgSrc = MuteImg.getAttribute('src');
 				if(MuteImgSrc == "./images/vdc_volume_UNMUTE.gif"){//not muted
 				volume_control('MUTING',agentchannel,'AgenT');
 				}else if(MuteImgSrc == "./images/vdc_volume_MUTE.gif"){//muted
@@ -487,10 +487,10 @@ function AutoCheckDupFun() {
 			var MuteSpan = document.getElementById('AgentMuteSpan'),
 					MuteA = MuteSpan.getElementsByTagName('a')[0],
 					MuteImg = MuteSpan.getElementsByTagName('img')[0];
-			var MuteImgSrc = MuteImg.getAttribute('src');
-			if(typeof MuteImgSrc === void(0)){
+			if(typeof MuteImg === void(0)){
 				console.log('%cMuteImgSrc is undefined!!!', 'color: red;');
 			}else{
+				var MuteImgSrc = MuteImg.getAttribute('src');
 				if(MuteImgSrc == "./images/vdc_volume_UNMUTE.gif"){//not muted
 				volume_control('MUTING',agentchannel,'AgenT');
 				}else if(MuteImgSrc == "./images/vdc_volume_MUTE.gif"){//muted
