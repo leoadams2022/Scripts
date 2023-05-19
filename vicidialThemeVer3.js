@@ -467,7 +467,16 @@ function AutoCheckDupFun() {
 		if(AutMuOnOff == 'On'){
 			var MuteSpan = document.getElementById('AgentMuteSpan'),
 					MuteA = MuteSpan.getElementsByTagName('a')[0],
-					MuteImg = MuteSpan.getElementsByTagName('img')[0];
+					MuteImg = MuteA.getElementsByTagName('img')[0];
+					
+			/*
+			
+			 var HungUpSpan = document.getElementById('HangupControl'),
+                    HungUpA = HungUpSpan.getElementsByTagName('a')[0],
+                    HungUpImg = HungUpA.getElementsByTagName('img')[0];
+                var ImgSrc = HungUpImg.getAttribute('src');
+			
+			*/
 			if(typeof MuteImg === void(0)){
 				console.log('%cMuteImgSrc is undefined!!!', 'color: red;');
 			}else{
@@ -486,7 +495,16 @@ function AutoCheckDupFun() {
 		if(AutMuOnOff == 'On'){
 			var MuteSpan = document.getElementById('AgentMuteSpan'),
 					MuteA = MuteSpan.getElementsByTagName('a')[0],
-					MuteImg = MuteSpan.getElementsByTagName('img')[0];
+					MuteImg = MuteA.getElementsByTagName('img')[0];
+					
+			/*
+			
+			 var HungUpSpan = document.getElementById('HangupControl'),
+                    HungUpA = HungUpSpan.getElementsByTagName('a')[0],
+                    HungUpImg = HungUpA.getElementsByTagName('img')[0];
+                var ImgSrc = HungUpImg.getAttribute('src');
+			
+			*/
 			if(typeof MuteImg === void(0)){
 				console.log('%cMuteImgSrc is undefined!!!', 'color: red;');
 			}else{
