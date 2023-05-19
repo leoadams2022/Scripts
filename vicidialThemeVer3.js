@@ -36,20 +36,20 @@ function autoMute(){
 }
 //MuteRecording function
 function MuteRecording(){
-	var resSpan = document.getElementById('RecMuSapn');
+	var RecMuSapn = document.getElementById('RecMuSapn');
 	if(isRecMuted == true){
 // 		let mustRecFunc = MuteRecordingByLeo('off');
 		MuteRecording('off');
 		isRecMuted = false;
-		resSpan.innerHTML ='RecMuOff';
-		resSpan.setAttribute("style", "color: #00ff0a !important;"); 
+		RecMuSapn.innerHTML ='RecMuOff';
+		RecMuSapn.setAttribute("style", "color: #00ff0a !important;"); 
 		
 	}else if(isRecMuted == false){
 // 		let mustRecFunc = MuteRecordingByLeo('on');
 		MuteRecording('on');
 		isRecMuted = true;
-		resSpan.innerHTML ='RecMuOn';
-		resSpan.setAttribute("style", "color: #ff9999 !important;");
+		RecMuSapn.innerHTML ='RecMuOn';
+		RecMuSapn.setAttribute("style", "color: #ff9999 !important;");
 		
 	}
 }
