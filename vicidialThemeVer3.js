@@ -16,6 +16,7 @@ Leave3WayCall.addEventListener("click", IhungedUpFun);
 var OnOff = 'On';
 var randomOnOff = 'Off';
 var AutMuOnOff = 'On';
+let isRecMuted = false;//uesd by tow functions so far MuteRecording()  MuteRecordingByLeo()
 //adding the button to tunr autohngup on and off
 const comments = document.querySelector("#comments");
 comments.insertAdjacentHTML("afterend", `<select id=\"FormSelect\"><option value=\"New\" selected>New</option><option value=\"Old\" >Old</option></select><Button class='myBtn CopyBtn' onclick=\"Copy()\">Copy</Button><Button onclick=\"googleForm()\" class=\"myBtn googleFormBtn\">Our Form</Button><Button onclick=\"MyGoogleForm()\" class=\"myBtn googleFormBtn\">My Form</Button><span id=\"dupspan\"></span><br><span id=\"Dispospan\"  style=\"color: #ff9999  !important;\"></span><br><span id=\"Dispospan2\"  style=\"color: #ff9999  !important;\"></span><br><input type=\'number\' id=\'calltime\' value=\'10\'><button class="myBtn OnOffBtn" onclick="AutoHungupOnOff()">Aut</button><button class="myBtn OnOffBtn" onclick="randomAutoHungupOnOff()">Ran</button><span class='FucnOnOffSapn' id='FucnOnOffSapn'>AutOn</span><span class='FucnOnOffSapn' id='randomFucnOnOffSapn'>RanOff</span><br><button class="myBtn OnOffBtn" onclick="autoMute()">AutMu</button><button class="myBtn OnOffBtn" onclick="MuteRecording()">RecMu</button><span class='FucnOnOffSapn' id='AutMuSpan'>AutMuOn</span><span class='FucnOnOffSapn' id='RecMuSapn'>RecMuOff</span>`);
@@ -36,15 +37,15 @@ function autoMute(){
 //MuteRecording function
 function MuteRecording(){
 	var resSpan = document.getElementById('RecMuSapn');
-	if(isRecMuted){
-		MuteRecordingByLeo('off');
-		if(isRecMuted == false){
+	if(isRecMuted == true){
+		let mustRecFunc = MuteRecordingByLeo('off');
+		if(mustRecFunc == false){
 			resSpan.innerHTML ='RecMuOff';
 			resSpan.setAttribute("style", "color: #00ff0a !important;"); 
 		}
 	}else if(isRecMuted == false){
-		MuteRecordingByLeo('on');
-		if(isRecMuted == true){
+		let mustRecFunc = MuteRecordingByLeo('on');
+		if(mustRecFunc == true){
 			resSpan.innerHTML ='RecMuOn';
 			resSpan.setAttribute("style", "color: #ff9999 !important;");
 		}
@@ -696,7 +697,7 @@ function GetDispo() {
 //----------------------------------------------------------
 
 
-let isRecMuted = false;
+
 function MuteRecordingByLeo(taskmute)// take 'on' or 'of'
 		{
 		var xmlhttp=false;
@@ -732,13 +733,16 @@ function MuteRecordingByLeo(taskmute)// take 'on' or 'of'
                     if(test2 == true){
                         // rec muting is on
                         isRecMuted = true;
+						return true;
                     }else if(test2 == false){
                         // rec muting is off
                         isRecMuted = false;
+						return false;
                     }else{
                         console.log('recmute_query: ',recmute_query);
                         console.log('responseText: ',xmlhttp.responseText);
                         alert('responseText: '+xmlhttp.responseText);
+						return 'bad';
                     }
 					}
 				}
