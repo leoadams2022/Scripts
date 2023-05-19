@@ -38,17 +38,19 @@ function autoMute(){
 function MuteRecording(){
 	var resSpan = document.getElementById('RecMuSapn');
 	if(isRecMuted == true){
-		let mustRecFunc = MuteRecordingByLeo('off');
-		if(mustRecFunc == false){
-			resSpan.innerHTML ='RecMuOff';
-			resSpan.setAttribute("style", "color: #00ff0a !important;"); 
-		}
+// 		let mustRecFunc = MuteRecordingByLeo('off');
+		MuteRecording('off');
+		isRecMuted = false;
+		resSpan.innerHTML ='RecMuOff';
+		resSpan.setAttribute("style", "color: #00ff0a !important;"); 
+		
 	}else if(isRecMuted == false){
-		let mustRecFunc = MuteRecordingByLeo('on');
-		if(mustRecFunc == true){
-			resSpan.innerHTML ='RecMuOn';
-			resSpan.setAttribute("style", "color: #ff9999 !important;");
-		}
+// 		let mustRecFunc = MuteRecordingByLeo('on');
+		MuteRecording('on');
+		isRecMuted = true;
+		resSpan.innerHTML ='RecMuOn';
+		resSpan.setAttribute("style", "color: #ff9999 !important;");
+		
 	}
 }
 
@@ -698,57 +700,7 @@ function GetDispo() {
 
 
 
-function MuteRecordingByLeo(taskmute)// take 'on' or 'of'
-		{
-		var xmlhttp=false;
-		
-		if (!xmlhttp && typeof XMLHttpRequest!='undefined')
-			{
-			xmlhttp = new XMLHttpRequest();
-			}
-		if (xmlhttp) 
-			{
-			var epochCID = epoch_sec;
-			var leadCID = document.vicidial_form.lead_id.value;
-			if (leadCID.length < 1)
-				{leadCID = user_abb;}
-			leadCID = set_length(leadCID,'10','left');
-			epochCID = set_length(epochCID,'6','right');
-			var queryCID = "AM" + epochCID + 'W' + leadCID + 'W';
-			var recmute_query = "server_ip=" + server_ip + "&session_name=" + session_name + "&user=" + user + "&pass=" + pass + "&ACTION=MuteRecording&format=text&channel=" + active_rec_channel + "&stage=" + taskmute + "&exten=" + session_id + "&ext_context=" + ext_context + "&queryCID=" + queryCID + "&agent_log_id=" + agent_log_id + "&lead_id=" + document.vicidial_form.lead_id.value + "&uniqueid=" + document.vicidial_form.uniqueid.value + "&campaign=" + campaign + "&user_group=" + VU_user_group;
 
-			xmlhttp.open('POST', 'manager_send.php'); 
-			xmlhttp.setRequestHeader('Content-Type','application/x-www-form-urlencoded; charset=UTF-8');
-			xmlhttp.send(recmute_query); 
-			xmlhttp.onreadystatechange = function() 
-				{ 
-				if (xmlhttp.readyState == 4 && xmlhttp.status == 200) 
-					{
-					Nactiveext = null;
-					Nactiveext = xmlhttp.responseText;
-					
-                    
-                    let test = Nactiveext.split(",");
-                    let test2 = test[1].includes("Muting on on");// ture or false
-                    if(test2 == true){
-                        // rec muting is on
-                        isRecMuted = true;
-						return true;
-                    }else if(test2 == false){
-                        // rec muting is off
-                        isRecMuted = false;
-						return false;
-                    }else{
-                        console.log('recmute_query: ',recmute_query);
-                        console.log('responseText: ',xmlhttp.responseText);
-                        alert('responseText: '+xmlhttp.responseText);
-						return 'bad';
-                    }
-					}
-				}
-			delete xmlhttp;
-			}
-}
 
 
 
