@@ -209,13 +209,13 @@ let isRecMuted = false;
 function MuteRecordingOnOff(){
 	var resSpan = document.getElementById('RecMuSapn');
 	if(isRecMuted == true){
-		// MuteRecording('off');
+		MuteRecording('off');
 		isRecMuted = false;
 		resSpan.innerHTML ='RecMuOff';
 		resSpan.classList.remove('redSpan');
 		resSpan.classList.add('greenSpan');
 	}else if(isRecMuted == false){
-		// MuteRecording('on');
+		MuteRecording('on');
 		isRecMuted = true;
 		resSpan.innerHTML ='RecMuOn';
 		resSpan.classList.add('redSpan');
