@@ -7,60 +7,56 @@ function IhungedUpFun() {
     GetDispo();
     console.log('%cIhungedUpFun clicked', 'color: green;');
 }
-//treger IhungedUpFun when hungup btn is clicked
-var HangupControl = document.getElementById("HangupControl");
-HangupControl.addEventListener("click", IhungedUpFun);
-const Leave3WayCall = document.getElementById("Leave3WayCall");
-Leave3WayCall.addEventListener("click", IhungedUpFun);
-// on and off var to tunr autohngup on and off
-// var OnOff = 'On';
-// var randomOnOff = 'Off';
-// var AutMuOnOff = 'Off';
-// let isRecMuted = false;//uesd by tow functions so far MuteRecording()  MuteRecordingByLeo()
-//adding the button to tunr autohngup on and off
+//                ---------------------------
+//adding  html elements
 const comments = document.querySelector("#comments");
 comments.insertAdjacentHTML("afterend", `
-	<select id=\'FormSelect\'>
-	<option value=\'New\' selected>New</option>
-	<option value=\'Old\'>Old</option>
-	</select>
+	<button onclick="ShowOptions()" class="myBtn">S/H</button>
+	<div id="MyOptionsDiv" class="MyOptionsDiv">
+		<select id=\'FormSelect\'>
+		<option value=\'New\' selected>New</option>
+		<option value=\'Old\'>Old</option>
+		</select>
 
-	<Button class=\'myBtn CopyBtn\' onclick=\'Copy()\'>Copy</Button>
+		<Button class=\'myBtn CopyBtn\' onclick=\'Copy()\'>Copy</Button>
 
-	<Button onclick=\'googleForm()\' class=\'myBtn googleFormBtn\'>Our Form</Button>
+		<Button onclick=\'googleForm()\' class=\'myBtn googleFormBtn\'>Our Form</Button>
 
-	<Button onclick=\'MyGoogleForm()\' class=\'myBtn googleFormBtn\'>My Form</Button>
+		<Button onclick=\'MyGoogleForm()\' class=\'myBtn googleFormBtn\'>My Form</Button>
 
-	<span id=\'dupspan\' class=\"OnOffSapn\">dupspan</span>
-	<br>
-	<span id=\'Dispospan\' class=\"OnOffSapn redSpan\"></span>
+		<span id=\'dupspan\' class=\"OnOffSapn\">dupspan</span>
+		<br>
+		<span id=\'Dispospan\' class=\"OnOffSapn redSpan\"></span>
 
-	<br>
+		<br>
 
-	<span id=\'Dispospan2\'  class=\"OnOffSapn redSpan\"></span>
-	<br>
+		<span id=\'Dispospan2\'  class=\"OnOffSapn redSpan\"></span>
+		<br>
+		<button onclick="ShowOptions('moreOptionDiv')" class="myBtn" >more</button>
+		<div id="moreOptionDiv" class="MyOptionsDiv">
+			<input type=\'number\' id=\'calltime\' value=\'10\'>
 
-	<input type=\'number\' id=\'calltime\' value=\'10\'>
+			<button class=\"myBtn OnOffBtn\" onclick=\"AutoHungupOnOff()\">Aut</button>
 
-	<button class=\"myBtn OnOffBtn\" onclick=\"AutoHungupOnOff()\">Aut</button>
+			<button class=\"myBtn OnOffBtn\" onclick=\"randomAutoHungupOnOff()\">Ran</button>
 
-	<button class=\"myBtn OnOffBtn\" onclick=\"randomAutoHungupOnOff()\">Ran</button>
+			<span class=\'OnOffSapn greenSpan\' id=\'FucnOnOffSapn\'>AutOff</span>
 
-	<span class=\'OnOffSapn greenSpan\' id=\'FucnOnOffSapn\'>AutOff</span>
+			<span class=\'OnOffSapn redSpan\' id=\'randomFucnOnOffSapn\'>RanOn</span>
 
-	<span class=\'OnOffSapn redSpan\' id=\'randomFucnOnOffSapn\'>RanOn</span>
+			<br>
 
-	<br>
+			<button class=\"myBtn OnOffBtn\" onclick=\"autoMute()\">AutMu</button>
 
-	<button class=\"myBtn OnOffBtn\" onclick=\"autoMute()\">AutMu</button>
+			<button class=\"myBtn OnOffBtn\" onclick=\"MuteRecordingOnOff()\">RecMu</button>
 
-	<button class=\"myBtn OnOffBtn\" onclick=\"MuteRecordingOnOff()\">RecMu</button>
+			<span class=\'OnOffSapn redSpan\' id=\'AutMuSpan\'>AutMuOff</span>
 
-	<span class=\'OnOffSapn redSpan\' id=\'AutMuSpan\'>AutMuOff</span>
-
-	<span class=\'OnOffSapn greenSpan\' id=\'RecMuSapn\'>RecMuOff</span>
+			<span class=\'OnOffSapn greenSpan\' id=\'RecMuSapn\'>RecMuOff</span>
+		</div>
+	</div>
 `);
-
+//                ---------------------------
 // Adding the Styles 
 const Head = document.querySelector("head");
 Head.insertAdjacentHTML("afterbegin", `
@@ -184,10 +180,24 @@ Head.insertAdjacentHTML("afterbegin", `
 		   /*display: none;*/
 	   }
 
+	   .MyOptionsDiv{
+		opacity: 0;
+		transition: opacity 0.5s;
+		}
+
+		.show{
+			opacity: 1;
+		}
+
 	</stlye>
 `);
 //                ---------------------------
-
+//ShowOptions function
+function ShowOptions(divId){
+	let MyOptionsDiv = document.getElementById(divId);
+	MyOptionsDiv.classList.toggle('show');
+}
+//                ---------------------------
 // autoMute function
 let AutMuOnOff = 'On';
 function autoMute(){
@@ -204,6 +214,7 @@ function autoMute(){
 		resSpan.classList.remove('greenSpan');
 	}	
 }
+//                ---------------------------
 //MuteRecording function
 let isRecMuted = false;
 function MuteRecordingOnOff(){
@@ -222,8 +233,7 @@ function MuteRecordingOnOff(){
 		resSpan.classList.remove('greenSpan');
 	}
 }
-
-
+//                ---------------------------
 let OnOff = 'Off';
 function AutoHungupOnOff(){
     var resSpan = document.getElementById('FucnOnOffSapn');
@@ -239,7 +249,7 @@ function AutoHungupOnOff(){
 			resSpan.classList.remove('greenSpan');
         }
 }
-
+//                ---------------------------
 let randomOnOff = 'On';
 function randomAutoHungupOnOff(){
     var resSpan = document.getElementById('randomFucnOnOffSapn');
@@ -255,10 +265,12 @@ function randomAutoHungupOnOff(){
 			resSpan.classList.remove('greenSpan');
         }
 }
+//                ---------------------------
 // var's to setTimeout so we can reset it outside the  AutoHangup function
 var hungupFun;
 var DispoFun;
 var AutoHangupFun;
+//                ---------------------------
 // function to get a randome Disop
 function randomDspo(){
 	let Arr1,ArrRes,dispoCode,fullDispo;
@@ -268,6 +280,7 @@ function randomDspo(){
 	ArrRes = {'fullDispo':fullDispo,'dispoCode':dispoCode};
 	return ArrRes;
 }
+//                ---------------------------
 // function to get a randome Number btween 5 and 30 or any other numbers
 function randomNum(fiveToThirty=true,num1=5,num2=30){
 	let numsArr =[];
@@ -282,6 +295,7 @@ function randomNum(fiveToThirty=true,num1=5,num2=30){
 	ArrRes = {'randomNum':randomNum	,'numsArr':numsArr};
 	return ArrRes;
 }
+//                ---------------------------
 // the AutoHangup function
 function AutoHangup() {
 	var timeOftheCall;
@@ -291,7 +305,6 @@ function AutoHangup() {
 		//this is the time of the call by SEC's you can change is as u like
 		timeOftheCall = document.getElementById('calltime').value;
 	}
-    //--------------------------
     var funcOn = '';
     var HungUpSpan = document.getElementById('HangupControl'),
         HungUpA = HungUpSpan.getElementsByTagName('a')[0];
@@ -331,8 +344,6 @@ function AutoHangup() {
             //makeing sure that the Dispo page is visibleq	
             if (visibility === 'visible') {
 				console.log('%cDispo table is visible', 'color: green;');
-				//var myArray = ["\'N\', \'ADD\', \'YES\'","\'A\', \'ADD\', \'YES\'","\'NI\', \'ADD\', \'YES\'","\'NV\', \'ADD\', \'YES\'",];
-				//var randomItem = myArray[Math.floor(Math.random()*myArray.length)];
                 DispoSelectContent_create(fullDispo);
                 DispoSelect_submit('', '', 'YES');
 				console.log('%chave Disopstioned as '+randomItem, 'color: green;');
@@ -355,6 +366,7 @@ function AutoHangup() {
     }
 }
 setTimeout(AutoHangup, 1000); //this shuld always be 1000
+//                ---------------------------
 // auto hung up when cust hungs up function
 function CustHungUp() {
 	var TransferVisibility = document.querySelector('#TransferMain').style.visibility;
@@ -389,7 +401,6 @@ function CustHungUp() {
 					console.log('%chave Disopstioned as ANS', 'color: blue;');
 				}, 1000);
 				setTimeout(AutoHangup, 2000);
-				// var resSpan = document.getElementById('post_phone_time_diff_span_contents');
 				var resSpan = document.getElementById('Dispospan');
 				resSpan.innerHTML = 'Cust HungUp Not Interested';
 				setTimeout(() => {
@@ -400,6 +411,7 @@ function CustHungUp() {
 	}
 }
 setInterval(CustHungUp, 1000);
+//                ---------------------------
 // the hungup with the keyboared function
 document.getElementById('post_phone_time_diff_span').style.visibility = 'visible';
 document.addEventListener("keydown", function(event) {
@@ -425,12 +437,10 @@ document.addEventListener("keydown", function(event) {
 					CallDispo = 'N';
                     CallLogFunction();
                     setTimeout(() => {
-                        //
                         DispoSelectContent_create('N', 'ADD', 'YES');
                         DispoSelect_submit('', '', 'YES');
                     }, 1000);
 					setTimeout(AutoHangup, 2000);
-                    // var resSpan = document.getElementById('post_phone_time_diff_span_contents');
                     resSpan.innerHTML = 'No Answer';
                     setTimeout(() => {
                         resSpan.innerHTML = '';
@@ -462,7 +472,6 @@ document.addEventListener("keydown", function(event) {
                         DispoSelect_submit('', '', 'YES');
                     }, 1000);
 					setTimeout(AutoHangup, 2000);
-                    // var resSpan = document.getElementById('post_phone_time_diff_span_contents');
                     resSpan.innerHTML = 'Answering Machine';
                     setTimeout(() => {
                         resSpan.innerHTML = '';
@@ -494,7 +503,6 @@ document.addEventListener("keydown", function(event) {
                         DispoSelect_submit('', '', 'YES');
                     }, 1000);
 					setTimeout(AutoHangup, 2000);
-                    // var resSpan = document.getElementById('post_phone_time_diff_span_contents');
                     resSpan.innerHTML = 'Not Interested';
                     setTimeout(() => {
                         resSpan.innerHTML = '';
@@ -526,7 +534,6 @@ document.addEventListener("keydown", function(event) {
                         DispoSelect_submit('', '', 'YES');
                     }, 1000);
 					setTimeout(AutoHangup, 2000);
-                    // var resSpan = document.getElementById('post_phone_time_diff_span_contents');
                     resSpan.innerHTML = 'Not Vetran';
                     setTimeout(() => {
                         resSpan.innerHTML = '';
@@ -536,25 +543,10 @@ document.addEventListener("keydown", function(event) {
             break;
         case 123:
             event.preventDefault();
-            //off 00ff0a on ff9999
-			var resSpan = document.getElementById('FucnOnOffSapn');
-			if(OnOff === 'On'){
-				OnOff = 'Off';
-				resSpan.innerHTML ='Auto function is off';
-                resSpan.setAttribute('style','color: #00ff0a !important');
-			}else if(OnOff === 'Off'){
-				OnOff = 'On';
-				resSpan.innerHTML ='Auto function is on';
-                resSpan.setAttribute('style','color: #ff9999 !important');
-				}
+			AutoHungupOnOff();
 			break;
     }
 })
-
-
-//                ---------------------------
-
-
 //                ---------------------------
 //Copy function
 function Copy() {
@@ -563,7 +555,7 @@ function Copy() {
 	var last = document.getElementById('last_name').value;
 	navigator.clipboard.writeText(number + ' ' + first + ' ' + last);
 }
-
+//                ---------------------------
 // google Form 
 function googleForm() {
 	var HungUpSpan = document.getElementById('HangupControl'),
@@ -590,7 +582,6 @@ function googleForm() {
 	}
 }
 //                ---------------------------
-
 // MY  google Form 
 function MyGoogleForm() {
 	var HungUpSpan = document.getElementById('HangupControl'),
@@ -619,8 +610,6 @@ function MyGoogleForm() {
 	}
 }
 //                ---------------------------
-
-// AUTO Dup Checker
 // get the dup list from the localStorage
 //        Old 
 var DupListOld = [];
@@ -632,7 +621,8 @@ var DupListNew = [];
 const SavedListNew = JSON.parse(localStorage.getItem("DupListNew"));
 if (null == SavedListNew) alert('no New dup list in the lucalstorge');
 else null != SavedListNew && (DupListNew = SavedListNew);
-// auto check Dup ----------------------------------
+//                ---------------------------
+// auto check Dup
 function AutoCheckDupFun() {
 	var HungUpSpan = document.getElementById('HangupControl'),
 		HungUpA = HungUpSpan.getElementsByTagName('a')[0];
@@ -645,25 +635,23 @@ function AutoCheckDupFun() {
 		if(AutMuOnOff === 'On'){
 			volume_control('MUTING',agentchannel,'AgenT');
 		}
-		// ///////////////auto mute part
+		/////////////////auto mute part
 	} else {
 		// auto mute part
 		if(AutMuOnOff === 'On'){
 			volume_control('UNMUTE',agentchannel,'AgenT');
 		}
-		// ///////////////auto mute part
+		/////////////////auto mute part
 		
 		var SelVal = document.getElementById("FormSelect").value;
 		if (SelVal === 'New') {
 			var TorFONew = DupListNew.includes(Num);
 			if (TorFONew == true) {
 				res.innerHTML = "New=BAD :(";
-				// res.setAttribute("style", "color: red !important;"); //#00ff0a
 				res.classList.add('redSpan');
 				res.classList.remove('greenSpan');
 			} else {
 				res.innerHTML = "New=Good :)";
-				// res.setAttribute("style", "color: #00ff0a !important;"); //#00ff0a
 				res.classList.remove('redSpan');
 				res.classList.add('greenSpan');
 			}
@@ -671,12 +659,10 @@ function AutoCheckDupFun() {
 			var TorFOld = DupListOld.includes(Num);
 			if (TorFOld == true) {
 				res.innerHTML = "Old=BAD :(";
-				// res.setAttribute("style", "color: red !important;"); //#00ff0a
 				res.classList.add('redSpan');
 				res.classList.remove('greenSpan');
 			} else {
 				res.innerHTML = "Old=Good :)";
-				// res.setAttribute("style", "color: #00ff0a !important;"); //#00ff0a
 				res.classList.remove('redSpan');
 				res.classList.add('greenSpan');
 			}
@@ -686,9 +672,6 @@ function AutoCheckDupFun() {
 		var TorF = NumbersArray.includes(number);
 		if (TorF == true) {
 			resSpan2.innerHTML = "ReC" + number;
-			/*setTimeout(() => {
-					resSpan2.innerHTML = '';
-				}, 5000);*/
 		} else {
 			resSpan2.innerHTML = '';
 		}
@@ -696,7 +679,19 @@ function AutoCheckDupFun() {
 }
 setInterval(AutoCheckDupFun, 1000);
 //                ---------------------------
-// Call Log function
+//treger GetDispo and IhungedUpFun when hungup btn or Leave3WayCall btn is clicked
+const HangupControl = document.getElementById("HangupControl");
+const Leave3WayCall = document.getElementById("Leave3WayCall");
+
+HangupControl.addEventListener("click", GetDispo);
+
+Leave3WayCall.addEventListener("click", GetDispo);
+
+HangupControl.addEventListener("click", IhungedUpFun);
+
+Leave3WayCall.addEventListener("click", IhungedUpFun);
+//                ---------------------------
+// geting the call log from the local Storage
 const SavedList = JSON.parse(localStorage.getItem('CallLogLocalStorage'));
 if (SavedList == null) {
 	var CallLogObject = [];
@@ -709,24 +704,8 @@ if (SavedList == null) {
 		NumbersArray.push(CallLogObjectFlat[j].number);
 	}
 }
-// const HangupControl = document.getElementById("HangupControl");
-// HangupControl.addEventListener("click", GetDispo);
-// const Leave3WayCall = document.getElementById("Leave3WayCall");
-// Leave3WayCall.addEventListener("click", GetDispo);
-/*
-const HangupControl = document.getElementById("HangupControl");
-
-const Leave3WayCall = document.getElementById("Leave3WayCall");
-
-
-
-*/
-HangupControl.addEventListener("click", GetDispo);
-
-Leave3WayCall.addEventListener("click", GetDispo);
-
-var CallDispo;
-
+//                ---------------------------
+// Call Log function
 function CallLogFunction() {
 	var number = document.getElementById('phone_numberDISP').innerText; //'                   '
 	if (number === '                   ') {
@@ -736,11 +715,6 @@ function CallLogFunction() {
 		var resSpan2 = document.getElementById('Dispospan2');
 		var TorF = NumbersArray.includes(number);
 		if (TorF == true) {
-			/*resSpan2.innerHTML = "I have called This Number before "+number;
-				// this is being done at the autoDupCheacker so you can see it before you hung up
-				setTimeout(() => {
-						resSpan2.innerHTML = '';
-					}, 5000);*/
 					CallLogObject.forEach(Element => {
 						if(Element[0].number == number){
 							let time = new Date();
@@ -786,7 +760,9 @@ function CallLogFunction() {
 		}
 	}
 }
-
+//                ---------------------------
+// GetDispo function
+var CallDispo; // a var to store the GetDispo results in
 function GetDispo() {
 	setTimeout(() => {
 		var DispoTable = document.getElementById('DispoSelectBox').style.visibility; //hidden  visible
