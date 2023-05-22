@@ -465,30 +465,13 @@ function AutoCheckDupFun() {
 		res.innerHTML = "";
 		// auto mute part
 		if(AutMuOnOff === 'On'){
-			console.log('no active AutMuOnOff = On :from AutoCheckDupFun');
-			var MuteSpan = document.getElementById('AgentMuteSpan'),
-					MuteA = MuteSpan.getElementsByTagName('a')[0].getAttribute('onclick');
-			if(MuteA === "volume_control('MUTING','SIP/9003-0002d59d','AgenT');return false;"){
-				volume_control('MUTING',agentchannel,'AgenT');
-				console.log('volume_control MUTING :from AutoCheckDupFun');
-			}else{
-				// already musted 
-			}
+			volume_control('MUTING',agentchannel,'AgenT');
 		}
 		// ///////////////auto mute part
 	} else {
-		
 		// auto mute part
 		if(AutMuOnOff === 'On'){
-			console.log('Active AutMuOnOff = On :from AutoCheckDupFun');
-			var MuteSpan = document.getElementById('AgentMuteSpan'),
-					MuteA = MuteSpan.getElementsByTagName('a')[0].getAttribute('onclick');
-			if(MuteA === "volume_control('MUTING','SIP/9003-0002d59d','AgenT');return false;"){
-				// alrady not muted
-			}else{
-				volume_control('UNMUTE',agentchannel,'AgenT');
-				console.log('volume_control UNMUTE :from AutoCheckDupFun');
-			}
+			volume_control('UNMUTE',agentchannel,'AgenT');
 		}
 		// ///////////////auto mute part
 		
