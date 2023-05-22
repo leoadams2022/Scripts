@@ -11,7 +11,7 @@ function IhungedUpFun() {
 //adding  html elements
 const comments = document.querySelector("#comments");
 comments.insertAdjacentHTML("afterend", `
-	<button onclick="ShowOptions()" class="myBtn">S/H</button>
+	<button onclick="ShowOptions('MyOptionsDiv')" class="myBtn">S/H</button>
 	<div id="MyOptionsDiv" class="MyOptionsDiv">
 		<select id=\'FormSelect\'>
 		<option value=\'New\' selected>New</option>
