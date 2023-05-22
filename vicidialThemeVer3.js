@@ -50,7 +50,7 @@ comments.insertAdjacentHTML("afterend", `
 
 			<button class=\"myBtn OnOffBtn\" onclick=\"MuteRecordingOnOff()\">RecMu</button>
 
-			<span class=\'OnOffSapn redSpan\' id=\'AutMuSpan\'>AutMuOn</span>
+			<span class=\'OnOffSapn greenSpan\' id=\'AutMuSpan\'>AutMuOff</span>
 
 			<span class=\'OnOffSapn greenSpan\' id=\'RecMuSapn\'>RecMuOff</span>
 		</div>
@@ -199,7 +199,7 @@ function ShowOptions(divId){
 }
 //                ---------------------------
 // autoMute function
-let AutMuOnOff = 'On';
+let AutMuOnOff = 'Off';
 let isItMuted = false;
 function autoMute(){
 	var resSpan = document.getElementById('AutMuSpan');
