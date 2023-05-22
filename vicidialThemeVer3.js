@@ -13,65 +13,246 @@ HangupControl.addEventListener("click", IhungedUpFun);
 const Leave3WayCall = document.getElementById("Leave3WayCall");
 Leave3WayCall.addEventListener("click", IhungedUpFun);
 // on and off var to tunr autohngup on and off
-var OnOff = 'On';
-var randomOnOff = 'Off';
-var AutMuOnOff = 'Off';
-let isRecMuted = false;//uesd by tow functions so far MuteRecording()  MuteRecordingByLeo()
+// var OnOff = 'On';
+// var randomOnOff = 'Off';
+// var AutMuOnOff = 'Off';
+// let isRecMuted = false;//uesd by tow functions so far MuteRecording()  MuteRecordingByLeo()
 //adding the button to tunr autohngup on and off
 const comments = document.querySelector("#comments");
-comments.insertAdjacentHTML("afterend", `<select id=\"FormSelect\"><option value=\"New\" selected>New</option><option value=\"Old\" >Old</option></select><Button class='myBtn CopyBtn' onclick=\"Copy()\">Copy</Button><Button onclick=\"googleForm()\" class=\"myBtn googleFormBtn\">Our Form</Button><Button onclick=\"MyGoogleForm()\" class=\"myBtn googleFormBtn\">My Form</Button><span id=\"dupspan\"></span><br><span id=\"Dispospan\"  style=\"color: #ff9999  !important;\"></span><br><span id=\"Dispospan2\"  style=\"color: #ff9999  !important;\"></span><br><input type=\'number\' id=\'calltime\' value=\'10\'><button class="myBtn OnOffBtn" onclick="AutoHungupOnOff()">Aut</button><button class="myBtn OnOffBtn" onclick="randomAutoHungupOnOff()">Ran</button><span class='FucnOnOffSapn' id='FucnOnOffSapn'>AutOn</span><span class='FucnOnOffSapn' id='randomFucnOnOffSapn'>RanOff</span><br><button class="myBtn OnOffBtn" onclick="autoMute()">AutMu</button><button class="myBtn OnOffBtn" onclick="MuteRecordingOnOff()">RecMu</button><span class='FucnOnOffSapn' id='AutMuSpan'>AutMuOff</span><span class='FucnOnOffSapn' id='RecMuSapn'>RecMuOff</span>`);
+comments.insertAdjacentHTML("afterend", `
+	<select id=\'FormSelect\'>
+	<option value=\'New\' selected>New</option>
+	<option value=\'Old\'>Old</option>
+	</select>
+
+	<Button class=\'myBtn CopyBtn\' onclick=\'Copy()\'>Copy</Button>
+
+	<Button onclick=\'googleForm()\' class=\'myBtn googleFormBtn\'>Our Form</Button>
+
+	<Button onclick=\'MyGoogleForm()\' class=\'myBtn googleFormBtn\'>My Form</Button>
+
+	<span id=\'dupspan\' class=\"OnOffSapn\">dupspan</span>
+	<br>
+	<span id=\'Dispospan\' class=\"OnOffSapn redSpan\">Dispospan</span>
+
+	<br>
+
+	<span id=\'Dispospan2\'  class=\"OnOffSapn redSpan\">Dispospan2</span>
+	<br>
+
+	<input type=\'number\' id=\'calltime\' value=\'10\'>
+
+	<button class=\"myBtn OnOffBtn\" onclick=\"AutoHungupOnOff()\">Aut</button>
+
+	<button class=\"myBtn OnOffBtn\" onclick=\"randomAutoHungupOnOff()\">Ran</button>
+
+	<span class=\'OnOffSapn greenSpan\' id=\'FucnOnOffSapn\'>AutOff</span>
+
+	<span class=\'OnOffSapn redSpan\' id=\'randomFucnOnOffSapn\'>RanOn</span>
+
+	<br>
+
+	<button class=\"myBtn OnOffBtn\" onclick=\"autoMute()\">AutMu</button>
+
+	<button class=\"myBtn OnOffBtn\" onclick=\"MuteRecordingOnOff()\">RecMu</button>
+
+	<span class=\'OnOffSapn redSpan\' id=\'AutMuSpan\'>AutMuOff</span>
+
+	<span class=\'OnOffSapn greenSpan\' id=\'RecMuSapn\'>RecMuOff</span>
+`);
+
+// Adding the Styles 
+const Head = document.querySelector("head");
+Head.insertAdjacentHTML("afterbegin", `
+	<style>
+		\n* {
+			\ncolor: white !important;
+			\n
+		}
+
+		\nhtml {
+			\nbackground: #2e4f53 !important;
+			\n
+		}
+
+		\ntd {
+			\n background: #2e4f53 !important;
+			\n color: white !important;
+			\n font-weight: bold;
+			\nfont-size: 20px !important;
+			\n
+		}
+
+		\na {
+			\ncolor: #03a9f4 !important;
+			\n
+		}
+
+		\ninput {
+			\ncolor: black !important;
+			\n font-size: 12px !important;
+			\n font-weight: 700 !important;
+			\n
+		}
+
+		\nspan#AgentViewStatus table tbody tr td {
+			\nbackground: none !important;
+			\n
+		}
+
+		\nspan#AgentViewStatus table tbody tr td font {
+			\ncolor: black !important;
+			\n
+		}
+
+		\nspan#AgentViewSpan {
+			\nbackground: #2e4f53 !important;
+			\nright: 0px !important;
+			\nleft: auto !important;
+			\nheight: auto !important;
+			\noverflow: auto !important;
+			\n
+		}
+
+		\nspan#MainStatuSSpan {
+			\nbackground: none !important;
+			\n
+		}
+
+		\n textarea#comments {
+			color: black !important;
+			width: 100%;
+		}
+
+	
+
+		.myBtn {
+			margin: 5px;
+			color: black !important;
+			font-size: 15px;
+			font-weight: 600;
+			border: none;
+			border-radius: 10px;
+			padding: 5px 10px;
+			
+	   }
+
+		.myBtn:hover {
+			 background: #d8bfd8;
+			
+	   }
+
+	   select#FormSelect,
+	   select#FormSelect option {
+		   color: black !important;
+	   }
+
+	   select#FormSelect,
+	   select.FormSelect {
+			height: 27px;
+			border-radius: 10px;
+			font-weight: bold;
+			margin: 5px;
+			color: black !important;
+			font-size: 15px;
+			font-weight: 600;
+			border: none;
+			border-radius: 10px;
+			padding: 5px 10px;
+			
+	   }
+
+		input#calltime {
+			width: 50px;
+			
+	   }
+
+		span.OnOffSapn {
+		   font-size: 16px;
+		   font-weight: 600;
+		   padding: 5px;
+	   }
+
+	   .greenSpan {
+		   color: #00ff0a !important;
+	   }
+	   .redSpan {
+		   color: #ff9999 !important;
+	   }
+
+		span#RecorDMute  {
+		   /*display: none;*/
+	   }
+
+	</stlye>
+`);
+//                ---------------------------
 
 // autoMute function
+let AutMuOnOff = 'On';
 function autoMute(){
 	var resSpan = document.getElementById('AutMuSpan');
 	if(AutMuOnOff === 'On'){
 		AutMuOnOff = 'Off';
 		resSpan.innerHTML ='AutMuOff';
-		resSpan.setAttribute("style", "color: #00ff0a !important;"); 
+		resSpan.classList.remove('redSpan');
+		resSpan.classList.add('greenSpan');
 	}else if(AutMuOnOff === 'Off'){
 		AutMuOnOff = 'On';
 		resSpan.innerHTML ='AutMuOn';
-		resSpan.setAttribute("style", "color: #ff9999 !important;");
+		resSpan.classList.add('redSpan');
+		resSpan.classList.remove('greenSpan');
 	}	
 }
 //MuteRecording function
+let isRecMuted = false;
 function MuteRecordingOnOff(){
 	var resSpan = document.getElementById('RecMuSapn');
 	if(isRecMuted == true){
-		MuteRecording('off');
+		// MuteRecording('off');
 		isRecMuted = false;
 		resSpan.innerHTML ='RecMuOff';
-		resSpan.setAttribute("style", "color: #00ff0a !important;"); 
+		resSpan.classList.remove('redSpan');
+		resSpan.classList.add('greenSpan');
 	}else if(isRecMuted == false){
-		MuteRecording('on');
+		// MuteRecording('on');
 		isRecMuted = true;
 		resSpan.innerHTML ='RecMuOn';
-		resSpan.setAttribute("style", "color: #ff9999 !important;");
+		resSpan.classList.add('redSpan');
+		resSpan.classList.remove('greenSpan');
 	}
 }
 
+
+let OnOff = 'Off';
 function AutoHungupOnOff(){
     var resSpan = document.getElementById('FucnOnOffSapn');
         if(OnOff === 'On'){
             OnOff = 'Off';
             resSpan.innerHTML ='AutOff';
-            resSpan.setAttribute("style", "color: #00ff0a !important;"); 
+			resSpan.classList.remove('redSpan');
+			resSpan.classList.add('greenSpan');
         }else if(OnOff === 'Off'){
             OnOff = 'On';
             resSpan.innerHTML ='AutOn';
-            resSpan.setAttribute("style", "color: #ff9999 !important;");
+			resSpan.classList.add('redSpan');
+			resSpan.classList.remove('greenSpan');
         }
 }
+
+let randomOnOff = 'On';
 function randomAutoHungupOnOff(){
-    var randomresSpan = document.getElementById('randomFucnOnOffSapn');
+    var resSpan = document.getElementById('randomFucnOnOffSapn');
         if(randomOnOff === 'On'){
             randomOnOff = 'Off';
-            randomresSpan.innerHTML ='RanOff';
-            randomresSpan.setAttribute("style", "color: #00ff0a !important;"); 
+            resSpan.innerHTML ='RanOff';
+			resSpan.classList.remove('redSpan');
+			resSpan.classList.add('greenSpan');
         }else if(randomOnOff === 'Off'){
             randomOnOff = 'On';
-            randomresSpan.innerHTML ='RanOn';
-            randomresSpan.setAttribute("style", "color: #ff9999 !important;");
+            resSpan.innerHTML ='RanOn';
+			resSpan.classList.add('redSpan');
+			resSpan.classList.remove('greenSpan');
         }
 }
 // var's to setTimeout so we can reset it outside the  AutoHangup function
@@ -373,10 +554,7 @@ document.addEventListener("keydown", function(event) {
 
 //                ---------------------------
 
-// Adding the Styles 
-const Head = document.querySelector("head");
-Head.insertAdjacentHTML("afterbegin", "<style>\n* {\ncolor: white !important;\n}\nhtml {\nbackground: #2e4f53 !important;\n}\ntd {\n    background: #2e4f53 !important;\n    color: white !important;\n    font-weight: bold;\nfont-size: 20px !important;\n}\na {\ncolor: #03a9f4 !important;\n}\ninput {\ncolor: black !important;\n    font-size: 12px !important;\n    font-weight: 700 !important;\n}\n.myBtn {\nmargin: 5px;\ncolor: black !important;\nfont-size: 15px;\nfont-weight: 600;\nborder: none;\nborder-radius: 10px;\npadding: 5px 10px;\n}\n.myBtn:hover {\n    background: #d8bfd8;\n}\nspan#AgentViewStatus table tbody tr td {\nbackground: none !important;\n}\nspan#AgentViewStatus table tbody tr td font {\ncolor: black !important;\n}\nspan#AgentViewSpan {\nbackground: #2e4f53 !important;\nright: 0px !important;\nleft: auto !important;\nheight: auto !important;\noverflow: auto !important;\n}\nspan#MainStatuSSpan {\nbackground: none !important;\n}\n textarea#comments { color: black !important; width: 100%;}select#FormSelect, select#FormSelect option{color: black !important;}\nselect#FormSelect,select.FormSelect {\nheight: 27px;\nborder-radius: 10px;\nfont-weight: bold;\nmargin: 5px;\ncolor: black !important;\nfont-size: 15px;\nfont-weight: 600;\nborder: none;\nborder-radius: 10px;\npadding: 5px 10px;\n}\ninput#calltime {\nwidth: 50px;\n}\nspan.FucnOnOffSapn {color: #ff9999 !important;}\nspan#RecorDMute\n{\ndisplay: none;\n}</stlye>");
-//                ---------------------------
+
 //                ---------------------------
 //Copy function
 function Copy() {
@@ -480,19 +658,27 @@ function AutoCheckDupFun() {
 			var TorFONew = DupListNew.includes(Num);
 			if (TorFONew == true) {
 				res.innerHTML = "New=BAD :(";
-				res.setAttribute("style", "color: red !important;"); //#00ff0a
+				// res.setAttribute("style", "color: red !important;"); //#00ff0a
+				res.classList.add('redSpan');
+				res.classList.remove('greenSpan');
 			} else {
 				res.innerHTML = "New=Good :)";
-				res.setAttribute("style", "color: #00ff0a !important;"); //#00ff0a
+				// res.setAttribute("style", "color: #00ff0a !important;"); //#00ff0a
+				res.classList.remove('redSpan');
+				res.classList.add('greenSpan');
 			}
 		} else if (SelVal === 'Old') {
 			var TorFOld = DupListOld.includes(Num);
 			if (TorFOld == true) {
 				res.innerHTML = "Old=BAD :(";
-				res.setAttribute("style", "color: red !important;"); //#00ff0a
+				// res.setAttribute("style", "color: red !important;"); //#00ff0a
+				res.classList.add('redSpan');
+				res.classList.remove('greenSpan');
 			} else {
 				res.innerHTML = "Old=Good :)";
-				res.setAttribute("style", "color: #00ff0a !important;"); //#00ff0a
+				// res.setAttribute("style", "color: #00ff0a !important;"); //#00ff0a
+				res.classList.remove('redSpan');
+				res.classList.add('greenSpan');
 			}
 		}
 		var number = document.getElementById('phone_numberDISP').innerText;
