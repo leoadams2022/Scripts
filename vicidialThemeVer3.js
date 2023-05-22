@@ -33,11 +33,11 @@ comments.insertAdjacentHTML("afterend", `
 
 	<span id=\'dupspan\' class=\"OnOffSapn\">dupspan</span>
 	<br>
-	<span id=\'Dispospan\' class=\"OnOffSapn redSpan\">Dispospan</span>
+	<span id=\'Dispospan\' class=\"OnOffSapn redSpan\"></span>
 
 	<br>
 
-	<span id=\'Dispospan2\'  class=\"OnOffSapn redSpan\">Dispospan2</span>
+	<span id=\'Dispospan2\'  class=\"OnOffSapn redSpan\"></span>
 	<br>
 
 	<input type=\'number\' id=\'calltime\' value=\'10\'>
