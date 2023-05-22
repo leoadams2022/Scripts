@@ -464,56 +464,26 @@ function AutoCheckDupFun() {
 		// console.log('There is no active call to hungup');
 		res.innerHTML = "";
 		// auto mute part
-		if(AutMuOnOff == 'On'){
+		if(AutMuOnOff === 'On'){
 			var MuteSpan = document.getElementById('AgentMuteSpan'),
-					MuteA = MuteSpan.getElementsByTagName('a')[0],
-					MuteImg = MuteA.getElementsByTagName('img')[0];
-					
-			/*
-			
-			 var HungUpSpan = document.getElementById('HangupControl'),
-                    HungUpA = HungUpSpan.getElementsByTagName('a')[0],
-                    HungUpImg = HungUpA.getElementsByTagName('img')[0];
-                var ImgSrc = HungUpImg.getAttribute('src');
-			
-			*/
-			if(typeof MuteImg === void(0)){
-				console.log('%cMuteImgSrc is undefined!!!', 'color: red;');
-			}else{
-				var MuteImgSrc = MuteImg.getAttribute('src');
-				if(MuteImgSrc == "./images/vdc_volume_UNMUTE.gif"){//not muted
+					MuteA = MuteSpan.getElementsByTagName('a')[0].getAttribute('onclick');
+			if(MuteA === "volume_control('MUTING','SIP/9003-0002d59d','AgenT');return false;"){
 				volume_control('MUTING',agentchannel,'AgenT');
-				}else if(MuteImgSrc == "./images/vdc_volume_MUTE.gif"){//muted
-					// alrady muted do nothing
-				}
+			}else{
+				// already musted 
 			}
 		}
 		// ///////////////auto mute part
 	} else {
 		
 		// auto mute part
-		if(AutMuOnOff == 'On'){
+		if(AutMuOnOff === 'On'){
 			var MuteSpan = document.getElementById('AgentMuteSpan'),
-					MuteA = MuteSpan.getElementsByTagName('a')[0],
-					MuteImg = MuteA.getElementsByTagName('img')[0];
-					
-			/*
-			
-			 var HungUpSpan = document.getElementById('HangupControl'),
-                    HungUpA = HungUpSpan.getElementsByTagName('a')[0],
-                    HungUpImg = HungUpA.getElementsByTagName('img')[0];
-                var ImgSrc = HungUpImg.getAttribute('src');
-			
-			*/
-			if(typeof MuteImg === void(0)){
-				console.log('%cMuteImgSrc is undefined!!!', 'color: red;');
+					MuteA = MuteSpan.getElementsByTagName('a')[0].getAttribute('onclick');
+			if(MuteA === "volume_control('MUTING','SIP/9003-0002d59d','AgenT');return false;"){
+				// alrady not muted
 			}else{
-				var MuteImgSrc = MuteImg.getAttribute('src');
-				if(MuteImgSrc == "./images/vdc_volume_UNMUTE.gif"){//not muted
-				volume_control('MUTING',agentchannel,'AgenT');
-				}else if(MuteImgSrc == "./images/vdc_volume_MUTE.gif"){//muted
-					// alrady muted do nothing
-				}
+				volume_control('UNMUTE',agentchannel,'AgenT');
 			}
 		}
 		// ///////////////auto mute part
@@ -719,6 +689,5 @@ function GetDispo() {
 	}, 1000);
 }
 //----------------------------------------------------------
-
 
 
