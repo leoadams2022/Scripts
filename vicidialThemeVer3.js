@@ -15,11 +15,11 @@ Leave3WayCall.addEventListener("click", IhungedUpFun);
 // on and off var to tunr autohngup on and off
 var OnOff = 'On';
 var randomOnOff = 'Off';
-var AutMuOnOff = 'On';
+var AutMuOnOff = 'Off';
 let isRecMuted = false;//uesd by tow functions so far MuteRecording()  MuteRecordingByLeo()
 //adding the button to tunr autohngup on and off
 const comments = document.querySelector("#comments");
-comments.insertAdjacentHTML("afterend", `<select id=\"FormSelect\"><option value=\"New\" selected>New</option><option value=\"Old\" >Old</option></select><Button class='myBtn CopyBtn' onclick=\"Copy()\">Copy</Button><Button onclick=\"googleForm()\" class=\"myBtn googleFormBtn\">Our Form</Button><Button onclick=\"MyGoogleForm()\" class=\"myBtn googleFormBtn\">My Form</Button><span id=\"dupspan\"></span><br><span id=\"Dispospan\"  style=\"color: #ff9999  !important;\"></span><br><span id=\"Dispospan2\"  style=\"color: #ff9999  !important;\"></span><br><input type=\'number\' id=\'calltime\' value=\'10\'><button class="myBtn OnOffBtn" onclick="AutoHungupOnOff()">Aut</button><button class="myBtn OnOffBtn" onclick="randomAutoHungupOnOff()">Ran</button><span class='FucnOnOffSapn' id='FucnOnOffSapn'>AutOn</span><span class='FucnOnOffSapn' id='randomFucnOnOffSapn'>RanOff</span><br><button class="myBtn OnOffBtn" onclick="autoMute()">AutMu</button><button class="myBtn OnOffBtn" onclick="MuteRecordingOnOff()">RecMu</button><span class='FucnOnOffSapn' id='AutMuSpan'>AutMuOn</span><span class='FucnOnOffSapn' id='RecMuSapn'>RecMuOff</span>`);
+comments.insertAdjacentHTML("afterend", `<select id=\"FormSelect\"><option value=\"New\" selected>New</option><option value=\"Old\" >Old</option></select><Button class='myBtn CopyBtn' onclick=\"Copy()\">Copy</Button><Button onclick=\"googleForm()\" class=\"myBtn googleFormBtn\">Our Form</Button><Button onclick=\"MyGoogleForm()\" class=\"myBtn googleFormBtn\">My Form</Button><span id=\"dupspan\"></span><br><span id=\"Dispospan\"  style=\"color: #ff9999  !important;\"></span><br><span id=\"Dispospan2\"  style=\"color: #ff9999  !important;\"></span><br><input type=\'number\' id=\'calltime\' value=\'10\'><button class="myBtn OnOffBtn" onclick="AutoHungupOnOff()">Aut</button><button class="myBtn OnOffBtn" onclick="randomAutoHungupOnOff()">Ran</button><span class='FucnOnOffSapn' id='FucnOnOffSapn'>AutOn</span><span class='FucnOnOffSapn' id='randomFucnOnOffSapn'>RanOff</span><br><button class="myBtn OnOffBtn" onclick="autoMute()">AutMu</button><button class="myBtn OnOffBtn" onclick="MuteRecordingOnOff()">RecMu</button><span class='FucnOnOffSapn' id='AutMuSpan'>AutMuOff</span><span class='FucnOnOffSapn' id='RecMuSapn'>RecMuOff</span>`);
 
 // autoMute function
 function autoMute(){
