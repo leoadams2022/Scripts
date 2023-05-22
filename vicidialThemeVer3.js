@@ -200,6 +200,7 @@ function ShowOptions(divId){
 //                ---------------------------
 // autoMute function
 let AutMuOnOff = 'On';
+let isItMuted = false;
 function autoMute(){
 	var resSpan = document.getElementById('AutMuSpan');
 	if(AutMuOnOff === 'On'){
@@ -207,6 +208,7 @@ function autoMute(){
 		resSpan.innerHTML ='AutMuOff';
 		resSpan.classList.remove('redSpan');
 		resSpan.classList.add('greenSpan');
+		isItMuted = true;
 	}else if(AutMuOnOff === 'Off'){
 		AutMuOnOff = 'On';
 		resSpan.innerHTML ='AutMuOn';
@@ -633,13 +635,25 @@ function AutoCheckDupFun() {
 		res.innerHTML = "";
 		// auto mute part
 		if(AutMuOnOff === 'On'){
-			volume_control('MUTING',agentchannel,'AgenT');
+			if(isItMuted == true){
+				console.log('already Muted,  NO-Active call')
+			}else if(isItMuted == false){
+				volume_control('MUTING',agentchannel,'AgenT');
+				isItMuted = true;
+				console.log('i have Muted, isItMuted set to true, NO-Active call');
+			}
 		}
 		/////////////////auto mute part
 	} else {
 		// auto mute part
 		if(AutMuOnOff === 'On'){
-			volume_control('UNMUTE',agentchannel,'AgenT');
+			if(isItMuted == true){
+				volume_control('UNMUTE',agentchannel,'AgenT');
+				isItMuted = false;
+				console.log('i have UN-Muted, isItMuted set to false, Active call');
+			}else if(isItMuted == false){
+				console.log('already UN-Muted, Active call');
+			}
 		}
 		/////////////////auto mute part
 		
@@ -838,5 +852,3 @@ function GetDispo() {
 	}, 1000);
 }
 //----------------------------------------------------------
-
-
