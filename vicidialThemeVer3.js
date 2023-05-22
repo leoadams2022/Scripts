@@ -50,7 +50,7 @@ comments.insertAdjacentHTML("afterend", `
 
 			<button class=\"myBtn OnOffBtn\" onclick=\"MuteRecordingOnOff()\">RecMu</button>
 
-			<span class=\'OnOffSapn redSpan\' id=\'AutMuSpan\'>AutMuOff</span>
+			<span class=\'OnOffSapn redSpan\' id=\'AutMuSpan\'>AutMuOn</span>
 
 			<span class=\'OnOffSapn greenSpan\' id=\'RecMuSapn\'>RecMuOff</span>
 		</div>
