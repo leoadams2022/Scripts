@@ -636,11 +636,11 @@ function AutoCheckDupFun() {
 		// auto mute part
 		if(AutMuOnOff === 'On'){
 			if(isItMuted == true){
-				console.log('already Muted,  NO-Active call')
+				console.log('%calready Muted,  NO-Active call', 'color: blue;')
 			}else if(isItMuted == false){
 				volume_control('MUTING',agentchannel,'AgenT');
 				isItMuted = true;
-				console.log('i have Muted, isItMuted set to true, NO-Active call');
+				console.log('%ci have Muted, isItMuted set to true, NO-Active call', 'color: blue;');
 			}
 		}
 		/////////////////auto mute part
@@ -650,9 +650,9 @@ function AutoCheckDupFun() {
 			if(isItMuted == true){
 				volume_control('UNMUTE',agentchannel,'AgenT');
 				isItMuted = false;
-				console.log('i have UN-Muted, isItMuted set to false, Active call');
+				console.log('%ci have UN-Muted, isItMuted set to false, Active call', 'color: blue;');
 			}else if(isItMuted == false){
-				console.log('already UN-Muted, Active call');
+				console.log('%calready UN-Muted, Active call', 'color: blue;');
 			}
 		}
 		/////////////////auto mute part
