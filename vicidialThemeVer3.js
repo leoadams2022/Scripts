@@ -674,10 +674,8 @@ function AutoCheckDupFun() {
 		/////////////////auto mute part
 		
 		// auto text To Audio part
-		let first_name = document.getElementById("first_name").value;
-		let last_name = document.getElementById("last_name").value;
-		fullName =  first_name +' '+ last_name;
-		autotextToAudio(fullName);
+		let phone_numberDISP = document.getElementById("phone_numberDISP").innerText;
+		autotextToAudio(phone_numberDISP);
 		/////////////////auto text To Audio part
 		
 		var SelVal = document.getElementById("FormSelect").value;
@@ -891,14 +889,14 @@ function autotextToAudioOnOffFunc(){
 		resSpan.classList.remove('greenSpan');
 	}
 }
-let oldName = 'no name';
-function autotextToAudio(newName){
+let oldNumber = 'no number';
+function autotextToAudio(newNumber){
 	
 	if(autotextToAudioOnOff === 'On'){
-		if(oldName != newName){
+		if(oldNumber != newNumber){
 		let textToAudioBtn = document.getElementById("textToAudioBtn");
 		textToAudio(textToAudioBtn);
-		oldName = newName;
+		oldNumber = newNumber;
 		}
 	}
 }
