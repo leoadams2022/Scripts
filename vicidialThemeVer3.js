@@ -657,6 +657,7 @@ function AutoCheckDupFun() {
 			}
 		}
 		/////////////////auto mute part
+		
 	} else {
 		// auto mute part
 		if(AutMuOnOff === 'On'){
@@ -669,6 +670,10 @@ function AutoCheckDupFun() {
 			}
 		}
 		/////////////////auto mute part
+		
+		// auto text To Audio part
+		autotextToAudio();
+		/////////////////auto text To Audio part
 		
 		var SelVal = document.getElementById("FormSelect").value;
 		if (SelVal === 'New') {
