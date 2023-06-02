@@ -891,9 +891,9 @@ function autotextToAudioOnOffFunc(){
 		resSpan.classList.remove('greenSpan');
 	}
 }
-
+let oldName = 'no name';
 function autotextToAudio(newName){
-	let oldName = 'no name';
+	
 	if(autotextToAudioOnOff === 'On'){
 		if(oldName != newName){
 		let textToAudioBtn = document.getElementById("textToAudioBtn");
