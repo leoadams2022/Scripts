@@ -48,7 +48,9 @@ comments.insertAdjacentHTML("afterend", `
 			<span class=\'OnOffSapn greenSpan\' id=\'FucnOnOffSapn\'>AutOff</span>
 
 			<span class=\'OnOffSapn redSpan\' id=\'randomFucnOnOffSapn\'>RanOn</span>
-
+			
+			<span class=\'OnOffSapn redSpan\' id=\'autotextToAudioOnOffSpan\'>AutTalkOn</span>
+			
 			<br>
 
 			<button class=\"myBtn OnOffBtn\" onclick=\"autoMute()\">AutMu</button>
@@ -672,7 +674,10 @@ function AutoCheckDupFun() {
 		/////////////////auto mute part
 		
 		// auto text To Audio part
-		autotextToAudio();
+		let first_name = document.getElementById("first_name").value;
+		let last_name = document.getElementById("last_name").value;
+		fullName =  first_name +' '+ last_name;
+		autotextToAudio(fullName);
 		/////////////////auto text To Audio part
 		
 		var SelVal = document.getElementById("FormSelect").value;
@@ -872,6 +877,7 @@ function GetDispo() {
 //                ---------------------------
 // Text To Speech function
 let autotextToAudioOnOff = 'On';
+// autotextToAudioOnOffSpan 
 function autotextToAudioOnOffFunc(){
 	if(autotextToAudioOnOff === 'On'){
 		autotextToAudioOnOff = 'Off';
@@ -879,10 +885,15 @@ function autotextToAudioOnOffFunc(){
 		autotextToAudioOnOff = 'On';
 	}
 }
-function autotextToAudio(){
+
+function autotextToAudio(newName){
+	let oldName = 'no name';
 	if(autotextToAudioOnOff === 'On'){
+		if(oldName != newName){
 		let textToAudioBtn = document.getElementById("textToAudioBtn");
 		textToAudio(textToAudioBtn);
+		oldName = newName;
+		}
 	}
 }
 function stopTextToAudio(){
