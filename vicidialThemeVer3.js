@@ -877,12 +877,18 @@ function GetDispo() {
 //                ---------------------------
 // Text To Speech function
 let autotextToAudioOnOff = 'On';
-// autotextToAudioOnOffSpan 
 function autotextToAudioOnOffFunc(){
+	var resSpan = document.getElementById('autotextToAudioOnOffSpan');
 	if(autotextToAudioOnOff === 'On'){
 		autotextToAudioOnOff = 'Off';
+		resSpan.innerHTML ='AutTalkOff';
+		resSpan.classList.remove('redSpan');
+		resSpan.classList.add('greenSpan');
 	}else{
 		autotextToAudioOnOff = 'On';
+		resSpan.innerHTML ='AutTalkOn';
+		resSpan.classList.add('redSpan');
+		resSpan.classList.remove('greenSpan');
 	}
 }
 
