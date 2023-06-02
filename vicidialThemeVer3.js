@@ -23,6 +23,9 @@ comments.insertAdjacentHTML("afterend", `
 		<Button onclick=\'googleForm()\' class=\'myBtn googleFormBtn\'>Our Form</Button>
 
 		<Button onclick=\'MyGoogleForm()\' class=\'myBtn googleFormBtn\'>My Form</Button>
+		
+		<button onclick="textToAudio(this)"  class="d-default myBtn">talk</button>
+		<button onclick="stopTextToAudio()" class="d-none myBtn">stop</button>
 
 		<span id=\'dupspan\' class=\"OnOffSapn\">dupspan</span>
 		<br>
