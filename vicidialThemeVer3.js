@@ -24,7 +24,7 @@ comments.insertAdjacentHTML("afterend", `
 
 		<Button onclick=\'MyGoogleForm()\' class=\'myBtn googleFormBtn\'>My Form</Button>
 		
-		<button onclick="textToAudio(this)"  class="d-default myBtn">talk</button>
+		<button onclick="textToAudio(this)"  class="d-default myBtn" id='textToAudioBtn'>talk</button>
 		<button onclick="stopTextToAudio()" class="d-none myBtn">stop</button>
 
 		<span id=\'dupspan\' class=\"OnOffSapn\">dupspan</span>
@@ -42,7 +42,9 @@ comments.insertAdjacentHTML("afterend", `
 			<button class=\"myBtn OnOffBtn\" onclick=\"AutoHungupOnOff()\">Aut</button>
 
 			<button class=\"myBtn OnOffBtn\" onclick=\"randomAutoHungupOnOff()\">Ran</button>
-
+				
+			<button class=\"myBtn OnOffBtn\" onclick=\"autotextToAudioOnOffFunc()\">AutTalk</button>
+			
 			<span class=\'OnOffSapn greenSpan\' id=\'FucnOnOffSapn\'>AutOff</span>
 
 			<span class=\'OnOffSapn redSpan\' id=\'randomFucnOnOffSapn\'>RanOn</span>
@@ -864,6 +866,20 @@ function GetDispo() {
 }
 //                ---------------------------
 // Text To Speech function
+let autotextToAudioOnOff = 'On';
+function autotextToAudioOnOffFunc(){
+	if(autotextToAudioOnOff === 'On'){
+		autotextToAudioOnOff = 'Off';
+	}else{
+		autotextToAudioOnOff = 'On';
+	}
+}
+function autotextToAudio(){
+	if(autotextToAudioOnOff === 'On'){
+		let textToAudioBtn = document.getElementById("textToAudioBtn");
+		textToAudio(textToAudioBtn);
+	}
+}
 function stopTextToAudio(){
   window.speechSynthesis.cancel();
 }
