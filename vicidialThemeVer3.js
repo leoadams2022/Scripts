@@ -130,6 +130,7 @@ Head.insertAdjacentHTML("afterbegin", `
 			border: none;
 			border-radius: 10px;
 			padding: 5px 10px;
+			cursor: pointer;
 			
 	   }
 
@@ -188,6 +189,13 @@ Head.insertAdjacentHTML("afterbegin", `
 		.show{
 			opacity: 1;
 		}
+		
+	  .d-none{
+	    display: none;
+	  }
+	  .d-default {
+	    display: initial;
+	  }
 
 	</stlye>
 `);
@@ -851,4 +859,40 @@ function GetDispo() {
 		}
 	}, 1000);
 }
-//----------------------------------------------------------
+//                ---------------------------
+// Text To Speech function
+function stopTextToAudio(){
+  window.speechSynthesis.cancel();
+}
+function textToAudio(span) {
+    const first_name = document.getElementById("first_name").value;
+    const last_name = document.getElementById("last_name").value;
+    const msg =  first_name +' '+ last_name
+    let speech = new SpeechSynthesisUtterance();
+      speech.voiceURI = 'Google US English';
+      speech.lang = 'en-US';
+      speech.name = 'Google US English';
+      speech.text = msg;
+    const synth = window.speechSynthesis;
+    synth.speak(speech);
+  // console.log(span.nextElementSibling)
+
+  function everyTime() {
+    if(!synth.speaking){
+        clearInterval(myInterval);
+        span.classList.remove('d-none');
+        span.classList.add('d-default');
+        span.nextElementSibling.classList.add('d-none');
+        span.nextElementSibling.classList.remove('d-default');
+    }else{
+      if(span.classList.contains('d-default')){
+        span.classList.remove('d-default');
+        span.classList.add('d-none');
+        span.nextElementSibling.classList.add('d-default');
+        span.nextElementSibling.classList.remove('d-none');
+      }
+    }
+  }
+  var myInterval = setInterval(everyTime, 50);
+  
+}
