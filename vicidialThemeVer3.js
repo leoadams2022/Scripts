@@ -360,12 +360,12 @@ function AutoHangup() {
             const visibility = DispoSelectBox.style.visibility;
             //makeing sure that the Dispo page is visibleq	
             if (visibility === 'visible') {
-				console.log('%cDispo table is visible', 'color: green;');
+		console.log('%cDispo table is visible', 'color: green;');
                 DispoSelectContent_create(fullDispo);
                 DispoSelect_submit('', '', 'YES');
-				console.log('%chave Disopstioned as '+randomItem, 'color: green;');
+		console.log('%chave Disopstioned as '+fullDispo, 'color: green;');
                 var resSpan = document.getElementById('Dispospan');
-                resSpan.innerHTML = 'AH '+randomItem;
+                resSpan.innerHTML = 'AH '+fullDispo;
                 setTimeout(() => {
                     resSpan.innerHTML = '';
                 }, 3000);
